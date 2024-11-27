@@ -30,17 +30,21 @@ function addExpenseToTable(expense) {
     row.insertCell(4).innerText = expense.type === 'income' ? '✔' : '';
     row.insertCell(5).innerText = expense.type === 'expense' ? '✔' : '';
 
-    // הוספת כפתור עריכה
+
+    // עמודת עריכה
     const editCell = row.insertCell(6);
-    const editButton = document.createElement("button");
-    editButton.innerText = "ערוך";
-    editButton.onclick = () => editExpense(expense, row);
+    const editButton = document.createElement('button');
+    editButton.innerHTML = '<i class="fas fa-edit"></i>'; // אייקון עט
+    editButton.className = 'edit-btn';
+    editButton.addEventListener('click', () => editExpense(expense, row));
     editCell.appendChild(editButton);
-    // הוספת כפתור מחיקה
+
+    // עמודת מחיקה
     const deleteCell = row.insertCell(7);
-    const deleteButton = document.createElement("button");
-    deleteButton.innerText = "מחק";
-    deleteButton.onclick = () => deleteExpense(expense, row);
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = '<i class="fas fa-trash"></i>'; // אייקון פח
+    deleteButton.className = 'delete-btn';
+    deleteButton.addEventListener('click', () => deleteExpense(expense, row));
     deleteCell.appendChild(deleteButton);
 
 }
@@ -76,7 +80,9 @@ function addExpense() {
     const fullDate = `${gregorianDate} / ${hebrewDate}`;
 
     // הוספת ההוצאה/ההכנסה לרשימה הפנימית
-    expenses.push({ fullDate, amount, description, paymentMethod, type });
+    expenses.push({ id: Date.now(), fullDate, amount, description, paymentMethod, type });
+    //Date.now(), // מזהה ייחודי מבוסס תאריך
+
 
     addExpenseToTable({fullDate, amount, description, paymentMethod, type});
 
@@ -101,12 +107,23 @@ function updateTotal() {
 
 // פונקציה למחיקת הוצאה
 function deleteExpense(expense, row) {
-    const index = expenses.indexOf(expense);
-    if (index > -1) {
-        expenses.splice(index, 1);
-        row.remove(); // הסרה מהטבלה
+    // חיפוש האובייקט במערך על בסיס המזהה הייחודי (id)
+    const expenseIndex = expenses.findIndex(e => e.id === expense.id);
+
+    if (expenseIndex !== -1) {
+        // הסרת האובייקט מהמערך
+        expenses.splice(expenseIndex, 1);
+
+        // הסרת השורה מהטבלה
+        row.remove();
+
+        // עדכון ה-localStorage
+        saveExpensesToLocalStorage();
+
+        // עדכון הסך הכל
         updateTotal();
-        saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים
+    } else {
+        console.error("ההוצאה לא נמצאה במערך ולא ניתן למחוק אותה.");
     }
 }
 
@@ -120,9 +137,10 @@ function editExpense(expense, row) {
 
     if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense')) {
         // עדכון הערך במערך הגלובלי
-        const expenseIndex = expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
+        const expenseIndex = expenses.findIndex(e => e.id === expense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
         if (expenseIndex !== -1) {
             expenses[expenseIndex] = {
+                id: expense.id, // שמירה על המזהה
                 fullDate: newFullDate,
                 amount: newAmount,
                 description: newDescription,
@@ -147,26 +165,5 @@ function editExpense(expense, row) {
         alert("נתונים לא תקינים, לא ניתן לעדכן.");
     }
 }
-
-        // expense.fullDate = newFullDate;
-        // expense.amount = newAmount;
-        // expense.description = newDescription;
-        // expense.paymentMethod = newPaymentMethod;
-        // expense.type = newType;
-
-        // // עדכון השורה בטבלה
-        // row.cells[0].innerText = newFullDate;
-        // row.cells[1].innerText = newAmount.toFixed(2);
-        // row.cells[2].innerText = newDescription;
-        // row.cells[3].innerText = newPaymentMethod;
-        // row.cells[4].innerText = newType === 'income' ? '✔' : '';
-        // row.cells[5].innerText = newType === 'expense' ? '✔' : '';
-
-        // updateTotal();
-        // saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים
-
-
-
-// קריאה לפונקציה לטעינת הנתונים בעת טעינת הדף
 
 document.addEventListener("DOMContentLoaded", loadExpensesFromLocalStorage);
