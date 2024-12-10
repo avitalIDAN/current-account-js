@@ -130,6 +130,20 @@ function filterExpenses(type = null) {
 //     updateTotal(filtered); // חישוב סך הכל לפי המסונן
 // }
 
+function filterByDateRange() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    const filtered = expenses.filter(expense => {
+        const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
+        return (!startDate || expenseDate >= new Date(startDate)) &&
+               (!endDate || expenseDate <= new Date(endDate));
+    });
+    renderTable(filtered);
+    updateTotal(filtered); // חישוב סך הכל לפי טווח התאריכים
+}
+
+
 
 function renderTable(expensesArray) {
     const tableBody = document.getElementById('expenseTable').querySelector('tbody');

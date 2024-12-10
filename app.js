@@ -55,6 +55,8 @@ function addExpense() {
     const descriptionInput = document.getElementById('description');
     const paymentMethodInput = document.getElementById('paymentMethod');
     const typeInputs = document.getElementsByName('type');
+    const dateInput = document.getElementById('expenseDate'); // שדה התאריך החדש
+    
     const amount = parseFloat(amountInput.value);
     const description = descriptionInput.value.trim();
     const paymentMethod = paymentMethodInput.value;
@@ -68,17 +70,23 @@ function addExpense() {
         }
     }
 
+    // בדיקת שדה התאריך
+    const selectedDate = dateInput.value ? new Date(dateInput.value) : new Date();
+    const gregorianDate = selectedDate.toLocaleDateString("he-IL"); // תאריך לועזי
+    const hebrewDate = getHebrewDate(selectedDate); // שימוש בפונקציה קיימת לתאריך עברי
+    const fullDate = `${gregorianDate} / ${hebrewDate}`; // שילוב התאריכים
+
     if (isNaN(amount) || description === "" || type === null) {
         alert("אנא הזן סכום תקין, תיאור וצורת תשלום, ובחר הכנסה או הוצאה.");
         return;
     }
 
-    // תאריך לועזי
-    const gregorianDate = new Date().toLocaleDateString("he-IL");
-    // תאריך עברי
-    const hebrewDate = getHebrewDate();
-    // שילוב התאריכים
-    const fullDate = `${gregorianDate} / ${hebrewDate}`;
+    // // תאריך לועזי
+    // const gregorianDate = new Date().toLocaleDateString("he-IL");
+    // // תאריך עברי
+    // const hebrewDate = getHebrewDate();
+    // // שילוב התאריכים
+    // const fullDate = `${gregorianDate} / ${hebrewDate}`;
 
     // הוספת ההוצאה/ההכנסה לרשימה הפנימית
     const expense = { id: Date.now(), fullDate, amount, description, paymentMethod, type }; // מזהה ייחודי מבוסס תאריך
@@ -92,6 +100,7 @@ function addExpense() {
     amountInput.value = '';
     descriptionInput.value = '';
     paymentMethodInput.value = 'מזומן';
+    dateInput.value = ''; // איפוס שדה התאריך
     typeInputs.forEach(input => input.checked = false);
 
     updateTotal();

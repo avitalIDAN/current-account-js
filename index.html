@@ -39,11 +39,16 @@
     </label>
     <br><br>
 
-    <button onclick="addExpense()">הוסף</button>
+    <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
+    
+    <label><button onclick="addExpense()">הוסף</button></label>
     
     <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
     <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
     <h3 id="total" >סך הכל: 0</h3>
+
+    <label>מתאריך: <input type="date" id="startDate" onchange="filterByDateRange()"></label>
+    <label>עד תאריך: <input type="date" id="endDate" onchange="filterByDateRange()"></label>
 
     <!-- טבלת הכנסות והוצאות -->
     <h2>רשימת הכנסות והוצאות:</h2>
