@@ -42,3 +42,20 @@ th {
     opacity: 0.7;
 }
 
+
+
+/* sort: */
+.sort-icon::before {
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+    border: 6px solid transparent;
+}
+
+.sort-icon.asc::before {
+    border-bottom: 6px solid black; /* חץ למעלה */
+}
+
+.sort-icon.desc::before {
+    border-top: 6px solid black; /* חץ למטה */
+}

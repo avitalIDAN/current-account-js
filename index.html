@@ -41,29 +41,51 @@
 
     <button onclick="addExpense()">הוסף</button>
     
+    <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
+    <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
+    <h3 id="total" >סך הכל: 0</h3>
+
     <!-- טבלת הכנסות והוצאות -->
     <h2>רשימת הכנסות והוצאות:</h2>
     <table id="expenseTable">
         <thead>
             <tr>
-                <th>תאריך</th>
+                <!-- <th>תאריך</th>
                 <th>סכום</th>
                 <th>תיאור</th>
                 <th>צורת תשלום</th>
                 <th>הכנסה</th>
                 <th>הוצאה</th>
                 <th>עריכה</th>
-                <th>מחיקה</th>
+                <th>מחיקה</th> -->
+                <th onclick="sortExpenses('date')">תאריך <span class="sort-icon"></span></th>
+                <th onclick="sortExpenses('amount')">סכום <span class="sort-icon"></span></th>
+                <th onclick="sortExpenses('description')">תיאור <span class="sort-icon"></span></th>
+                <th onclick="sortExpenses('paymentMethod')">צורת תשלום <span class="sort-icon"></span></th>
+                <th onclick="sortExpenses('income')">הכנסה <span class="sort-icon"></span></th>
+                <th onclick="sortExpenses('expense')">הוצאה <span class="sort-icon"></span></th>
+                <th>עריכה</th>
+                <th>מחיקה</th> 
+            </tr>
+            <tr>
+                <th><input type="text" placeholder="סנן לפי תאריך" oninput="filterExpenses()"></th>
+                <th><input type="number" placeholder="סנן לפי סכום" oninput="filterExpenses()"></th>
+                <th><input type="text" placeholder="סנן לפי תיאור" oninput="filterExpenses()"></th>
+                <th><input type="text" placeholder="סנן לפי תשלום" oninput="filterExpenses()"></th>
+                <th><button onclick="filterExpenses('income')">רק הכנסות</button></th>
+                <th><button onclick="filterExpenses('expense')">רק הוצאות</button></th> 
+                <th></th>
+                <th></th> 
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
-
-    <h3 id="total">סך הכל: 0</h3>
+<!--     <h3 id="total">סך הכל: 0</h3> -->
 
     <!-- טעינת קבצי JavaScript -->
     <script src="hebrewDate.js"></script>
+    <script src="table.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

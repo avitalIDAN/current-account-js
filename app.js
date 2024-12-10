@@ -12,6 +12,7 @@ function loadExpensesFromLocalStorage() {
         const parsedExpenses = JSON.parse(savedExpenses);
         parsedExpenses.forEach(expense => {
             expenses.push(expense);
+            console.log(expense.id);//בדיקה
             addExpenseToTable(expense);
         });
         updateTotal();
@@ -80,11 +81,12 @@ function addExpense() {
     const fullDate = `${gregorianDate} / ${hebrewDate}`;
 
     // הוספת ההוצאה/ההכנסה לרשימה הפנימית
-    expenses.push({ id: Date.now(), fullDate, amount, description, paymentMethod, type });
+    const expense = { id: Date.now(), fullDate, amount, description, paymentMethod, type }; // מזהה ייחודי מבוסס תאריך
+    expenses.push(expense);
     //Date.now(), // מזהה ייחודי מבוסס תאריך
+    console.log(expenses);
 
-
-    addExpenseToTable({fullDate, amount, description, paymentMethod, type});
+    addExpenseToTable(expense);
 
     // איפוס שדות הקלט לאחר הוספה
     amountInput.value = '';
@@ -96,14 +98,45 @@ function addExpense() {
     saveExpensesToLocalStorage();
 }
 
-function updateTotal() {
-    // חישוב סך ההכנסות וההוצאות
-    const total = expenses.reduce((sum, expense) => {
-        return sum + (expense.type === 'income' ? expense.amount : -expense.amount);
-    }, 0);
+// function updateTotal() {
+//     // חישוב סך ההכנסות וההוצאות
+//     const total = expenses.reduce((sum, expense) => {
+//         return sum + (expense.type === 'income' ? expense.amount : -expense.amount);
+//     }, 0);
 
+//     document.getElementById('total').innerText = `סך הכל: ${total.toFixed(2)}`;
+// }
+
+function updateTotal(filteredExpenses = null) {
+    if(!filteredExpenses){
+        filteredExpenses = expenses;
+    }
+    else if (filteredExpenses.length === 0) {
+        console.log("No expenses to calculate");
+        document.getElementById('total').innerText = "סך הכל: 0";
+        document.getElementById('totalIncome').innerText = "סך הכנסות: 0";
+        document.getElementById('totalExpense').innerText = "סך הוצאות: 0";
+        return;
+    }
+    // חישוב סך ההכנסות
+    const totalIncome = filteredExpenses //expenses
+        .filter(expense => expense.type === 'income')
+        .reduce((sum, expense) => sum + expense.amount, 0);
+
+    // חישוב סך ההוצאות
+    const totalExpense = filteredExpenses //expenses
+        .filter(expense => expense.type === 'expense')
+        .reduce((sum, expense) => sum + expense.amount, 0);
+
+    // חישוב סך הכל (הכנסות פחות הוצאות)
+    const total = totalIncome - totalExpense;
+
+    // עדכון התצוגה
     document.getElementById('total').innerText = `סך הכל: ${total.toFixed(2)}`;
+    document.getElementById('totalIncome').innerText = `סך הכנסות: ${totalIncome.toFixed(2)}`;
+    document.getElementById('totalExpense').innerText = `סך הוצאות: ${totalExpense.toFixed(2)}`;
 }
+
 
 // פונקציה למחיקת הוצאה
 function deleteExpense(expense, row) {
@@ -138,6 +171,8 @@ function editExpense(expense, row) {
     if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense')) {
         // עדכון הערך במערך הגלובלי
         const expenseIndex = expenses.findIndex(e => e.id === expense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
+        console.log("ID לחיפוש:", expense.id);// בדיקה
+        console.log("תוצאה של findIndex:", expenseIndex);// בדיקה
         if (expenseIndex !== -1) {
             expenses[expenseIndex] = {
                 id: expense.id, // שמירה על המזהה
