@@ -11,7 +11,12 @@
 </head>
 <body>
     <h1>מנהל הכנסות והוצאות</h1>
-    
+    <!-- <div id="colorLegend">
+        <p><span style="background-color: #d4f8d4;">&nbsp;&nbsp;&nbsp;</span> הכנסה</p>
+        <p><span style="background-color: #f8d4d4;">&nbsp;&nbsp;&nbsp;</span> הוצאה</p>
+        <p><span style="background-color: #fff4d4;">&nbsp;&nbsp;&nbsp;</span> הלוואה</p>
+        <p><span style="background-color: #d4e3f8;">&nbsp;&nbsp;&nbsp;</span> החזר</p>
+    </div> -->
     <!-- טופס קלט -->
     <label for="amount">סכום:</label>
     <input type="number" id="amount" placeholder="הכנס סכום">
@@ -37,6 +42,13 @@
     <label>
         <input type="radio" name="type" value="expense"> הוצאה
     </label>
+    <label>
+        <input type="radio" name="type" value="loan"> הלוואה
+    </label>
+    <label>
+        <input type="radio" name="type" value="repayment"> החזר
+    </label>
+    
     <br><br>
 
     <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
@@ -45,6 +57,7 @@
     
     <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
     <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
+    <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: 0, סך החזרים: 0</h3>
     <h3 id="total" >סך הכל: 0</h3>
 
     <label>מתאריך: <input type="date" id="startDate" onchange="filterByDateRange()"></label>
@@ -79,8 +92,7 @@
                 <th><input type="text" placeholder="סנן לפי תשלום" oninput="filterExpenses()"></th>
                 <th><button onclick="filterExpenses('income')">רק הכנסות</button></th>
                 <th><button onclick="filterExpenses('expense')">רק הוצאות</button></th> 
-                <th></th>
-                <th></th> 
+                <th colspan="2"><button onclick="filterExpenses('loan_repayment')">הלוואות והחזרים</button></th> 
             </tr>
         </thead>
         <tbody>

@@ -101,7 +101,15 @@ function filterExpenses(type = null) {
         const paymentMethodFilter = filters[3].value ? expense.paymentMethod && expense.paymentMethod.includes(filters[3].value) : true;
         //const typeFilter = filters[4].value ? expense.type && expense.type.includes(filters[4].value) : true;
         // סינון לפי סוג
-        const typeFilter = type ? expense.type === type : true;
+        //const typeFilter = type ? expense.type === type : true;
+
+        // סינון לפי סוג
+        const typeFilter = type
+        ? type === "loan_repayment"
+            ? expense.type === "loan" || expense.type === "repayment"
+            : expense.type === type
+        : true;
+
 
         return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter;
     });
