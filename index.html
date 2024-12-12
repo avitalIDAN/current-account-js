@@ -18,46 +18,50 @@
         <p><span style="background-color: #d4e3f8;">&nbsp;&nbsp;&nbsp;</span> החזר</p>
     </div> -->
     <!-- טופס קלט -->
-    <label for="amount">סכום:</label>
-    <input type="number" id="amount" placeholder="הכנס סכום">
-    <br><br>
+     
+    <div class="add-expense-container">
+        <h2>הוספה חדשה</h2>
 
-    <label for="description">תיאור:</label>
-    <input type="text" id="description" placeholder="הכנס תיאור">
-    <br><br>
+        <!-- הכנסה, הוצאה או הלוואה -->
+        <label style="color:rgb(0, 255, 0)">
+            <input type="radio" name="type" value="income"> הכנסה
+        </label>
+        <label style="color:rgb(255, 0, 0)">
+            <input type="radio" name="type" value="expense" > הוצאה
+        </label>
+        <label style="color:rgb(255, 0, 0)">
+            <input type="radio" name="type" value="loan" > הלוותי / החזרתי
+        </label>
+        <label style="color:rgb(0, 255, 0)">
+            <input type="radio" name="type" value="repayment" > לוויתי/ החזירו
+        </label>
+        
+        <br><br>
+        <label for="amount">סכום:</label>
+        <input type="number" id="amount" placeholder="הכנס סכום">
+        <br><br>
 
-    <label for="paymentMethod">צורת תשלום:</label>
-    <select id="paymentMethod">
-        <option value="מזומן">מזומן</option>
-        <option value="אשראי">אשראי</option>
-        <option value="העברה בנקאית">העברה בנקאית</option>
-        <option value="פייבוקס">פייבוקס</option>
-    </select>
-    <br><br>
+        <label for="description">תיאור:</label>
+        <input type="text" id="description" placeholder="הכנס תיאור">
+        <br><br>
 
-    <!-- הכנסה או הוצאה -->
-    <label>
-        <input type="radio" name="type" value="income"> הכנסה
-    </label>
-    <label>
-        <input type="radio" name="type" value="expense"> הוצאה
-    </label>
-    <label>
-        <input type="radio" name="type" value="loan"> הלוואה
-    </label>
-    <label>
-        <input type="radio" name="type" value="repayment"> החזר
-    </label>
-    
-    <br><br>
+        <label for="paymentMethod">צורת תשלום:</label>
+        <select id="paymentMethod">
+            <option value="מזומן">מזומן</option>
+            <option value="אשראי">אשראי</option>
+            <option value="העברה בנקאית">העברה בנקאית</option>
+            <option value="פייבוקס">פייבוקס</option>
+        </select>
+        <br><br>
 
-    <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
-    
-    <label><button onclick="addExpense()">הוסף</button></label>
-    
+        <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
+        <br><br>
+        <button onclick="addExpense()">הוסף</button>
+    </div>
+
     <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
     <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
-    <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: 0, סך החזרים: 0</h3>
+    <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: הוצאה- 0, הכנסה- 0</h3>
     <h3 id="total" >סך הכל: 0</h3>
 
     <label>מתאריך: <input type="date" id="startDate" onchange="filterByDateRange()"></label>
@@ -90,9 +94,12 @@
                 <th><input type="number" placeholder="סנן לפי סכום" oninput="filterExpenses()"></th>
                 <th><input type="text" placeholder="סנן לפי תיאור" oninput="filterExpenses()"></th>
                 <th><input type="text" placeholder="סנן לפי תשלום" oninput="filterExpenses()"></th>
-                <th><button onclick="filterExpenses('income')">רק הכנסות</button></th>
-                <th><button onclick="filterExpenses('expense')">רק הוצאות</button></th> 
-                <th colspan="2"><button onclick="filterExpenses('loan_repayment')">הלוואות והחזרים</button></th> 
+                <th colspan="4">
+                    <button onclick="filterExpenses('income')">רק הכנסות</button>
+                    <button onclick="filterExpenses('expense')">רק הוצאות</button>
+                    <button onclick="filterExpenses('loan_repayment')">הלוואות והחזרים</button>
+                    <button onclick="filterExpenses('all')">הכל</button>
+                </th>
             </tr>
         </thead>
         <tbody>

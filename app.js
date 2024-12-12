@@ -167,7 +167,7 @@ function updateTotal(filteredExpenses = expenses) {
     // הצגת סך ההלוואות וההחזרים, אם קיימים
     const loanElement = document.getElementById('loanSummary');
     if (totalLoan > 0 || totalRepayment > 0) {
-        loanElement.innerText = `סך הלוואות: ${totalLoan.toFixed(2)}, סך החזרים: ${totalRepayment.toFixed(2)}`;
+        loanElement.innerText = `סך הלוואות: הוצאה-  ${totalLoan.toFixed(2)}, הכנסה- ${totalRepayment.toFixed(2)}`;
         loanElement.style.display = 'block';
     } else {
         loanElement.style.display = 'none';
@@ -199,13 +199,14 @@ function deleteExpense(expense, row) {
 
 // פונקציה לעריכת הוצאה
 function editExpense(expense, row) {
+    console.log("בדיקה");// בדיקה
     const newFullDate = prompt("עדכן תאריך:", expense.fullDate);
     const newAmount = parseFloat(prompt("עדכן סכום:", expense.amount));
     const newDescription = prompt("עדכן תיאור:", expense.description);
     const newPaymentMethod = prompt("עדכן צורת תשלום:", expense.paymentMethod);
-    const newType = prompt("עדכן סוג (income או expense):", expense.type);
+    const newType = prompt("עדכן סוג (income, expense, loan, repayment):", expense.type);
 
-    if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense')) {
+    if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense'|| newType === 'loan' || newType === 'repayment')) {
         // עדכון הערך במערך הגלובלי
         const expenseIndex = expenses.findIndex(e => e.id === expense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
         console.log("ID לחיפוש:", expense.id);// בדיקה
@@ -225,8 +226,8 @@ function editExpense(expense, row) {
             row.cells[1].innerText = newAmount.toFixed(2);
             row.cells[2].innerText = newDescription;
             row.cells[3].innerText = newPaymentMethod;
-            row.cells[4].innerText = newType === 'income' ? '✔' : '';
-            row.cells[5].innerText = newType === 'expense' ? '✔' : '';
+            row.cells[4].innerText = newType === 'income' || newType === 'repayment'? '✔' : '';
+            row.cells[5].innerText = newType === 'expense' || newType === 'loan' ? '✔' : '';
 
             updateTotal();
             saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים

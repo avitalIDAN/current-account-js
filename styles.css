@@ -1,3 +1,19 @@
+.add-expense-container {
+    border: 2px solid #007bff; /* צבע המסגרת */
+    border-radius: 8px; /* פינות מעוגלות */
+    padding: 15px; /* ריווח פנימי */
+    margin: 20px 0; /* ריווח חיצוני */
+    background-color: #f9f9f9; /* צבע רקע */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* הצללה */
+    max-width: 400px; /* רוחב מקסימלי */
+}
+.add-expense-container h2 {
+    margin-top: 0;
+    color: #007bff; /* צבע הכותרת */
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
     direction: rtl; /* תצוגת טקסט מימין לשמאל */

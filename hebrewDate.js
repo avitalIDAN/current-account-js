@@ -1,5 +1,5 @@
-function getHebrewDate() {
-    const now = new Date();
+function getHebrewDate(now) {
+    //const now = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric', calendar: 'hebrew', numberingSystem: 'hebrew' };
     let dateStr = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', options).format(now);
 
