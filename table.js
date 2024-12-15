@@ -9,10 +9,12 @@ const sortState = {
 function sortExpenses(criteria) {
     // עדכון מצב המיון
     if (sortState.column === criteria) {
-        sortState.order = sortState.order === "asc" ? "desc" : sortState.order === "desc" ? null : "asc";
+        sortState.order = sortState.order === "desc" ? "asc" : sortState.order === "asc" ? null : "desc";
+        //sortState.order = sortState.order === "asc" ? "desc" : sortState.order === "desc" ? null : "asc";
     } else {
         sortState.column = criteria;
-        sortState.order = "asc";
+        sortState.order = "desc"; // ברירת מחדל: מיון הפוך
+        //sortState.order = "asc";
     }
 
     // בדיקה אם צריך לבטל את המיון
@@ -71,10 +73,19 @@ function updateSortIcons(criteria) {
 
 
 function filterExpenses(type = null) {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
     const filters = document.querySelectorAll('thead input');
     console.log("Filters:", filters); // בדיקה שהשדות נטענים נכון
 
     const filtered = expenses.filter(expense => {
+        // סינון לפי טווח תאריכים
+        const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
+        const ByDateRange = (!startDate || expenseDate >= new Date(startDate)) &&
+                           (!endDate || expenseDate <= new Date(endDate));
+
+
         //console.log("Expense being checked:", expense); // בדיקה שהשדות קיימים בכל פריט
 
         const dateFilter = filters[0].value ? expense.fullDate && expense.fullDate.includes(filters[0].value) : true;
@@ -95,7 +106,7 @@ function filterExpenses(type = null) {
         : true;
 
 
-        return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter;
+        return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter && ByDateRange;//filterByDateRange(expense);
     });
 
     //console.log("Filtered results:", filtered); // בדיקה שהתוצאה סבירה
@@ -104,18 +115,18 @@ function filterExpenses(type = null) {
     updateTotal(filtered); // חישוב סך הכל לפי המסונן
 }
 
-function filterByDateRange() {
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
+// function filterByDateRange(expense) {
+//     const startDate = document.getElementById('startDate').value;
+//     const endDate = document.getElementById('endDate').value;
 
-    const filtered = expenses.filter(expense => {
-        const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
-        return (!startDate || expenseDate >= new Date(startDate)) &&
-               (!endDate || expenseDate <= new Date(endDate));
-    });
-    renderTable(filtered);
-    updateTotal(filtered); // חישוב סך הכל לפי טווח התאריכים
-}
+//     //const filtered = expenses.filter(expense => {
+//         const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
+//         return (!startDate || expenseDate >= new Date(startDate)) &&
+//                (!endDate || expenseDate <= new Date(endDate));
+//     //});
+//     //renderTable(filtered);
+//     //updateTotal(filtered); // חישוב סך הכל לפי טווח התאריכים
+// }
 
 
 

@@ -23,13 +23,14 @@ function loadExpensesFromLocalStorage() {
 function addExpenseToTable(expense) {
     // הוספת ההוצאה/ההכנסה לטבלה
     const tableBody = document.getElementById('expenseTable').querySelector('tbody');
-    const row = tableBody.insertRow();
+    const row = tableBody.insertRow(0);//tableBody.insertRow();
 
     // צבע לפי סוג
-    if (expense.type === 'income') row.style.backgroundColor = '#d4f8d4'; // ירוק
-    if (expense.type === 'expense') row.style.backgroundColor = '#f8d4d4'; // אדום
-    if (expense.type === 'loan') row.style.backgroundColor = '#fff4d4'; // כתום
-    if (expense.type === 'repayment') row.style.backgroundColor = '#d4e3f8'; // כחול
+    updateRowBackground(row, expense.type)
+    // if (expense.type === 'income') row.style.backgroundColor = '#d4f8d4'; // ירוק
+    // if (expense.type === 'expense') row.style.backgroundColor = '#f8d4d4'; // אדום
+    // if (expense.type === 'loan') row.style.backgroundColor = '#fff4d4'; // כתום
+    // if (expense.type === 'repayment') row.style.backgroundColor = '#d4e3f8'; // כחול
 
     row.insertCell(0).innerText = expense.fullDate;
     row.insertCell(1).innerText = expense.amount.toFixed(2);
@@ -79,22 +80,12 @@ function addExpense() {
 
     // בדיקת שדה התאריך
     const selectedDate = dateInput.value ? new Date(dateInput.value) : new Date();
-    // const gregorianDate = selectedDate.toLocaleDateString("he-IL"); // תאריך לועזי
-    // const hebrewDate = getHebrewDate(selectedDate); // שימוש בפונקציה קיימת לתאריך עברי
     const fullDate = viewDate(selectedDate)
 
     if (isNaN(amount) || description === "" || type === null) {
-//alert("אנא הזן סכום תקין, תיאור וצורת תשלום, ובחר הכנסה או הוצאה.");
     alert("אנא הזן סכום תקין, תיאור וצורת תשלום, ובחר סוג (הכנסה, הוצאה, הלוואה או החזר).");
         return;
     }
-
-    // // תאריך לועזי
-    // const gregorianDate = new Date().toLocaleDateString("he-IL");
-    // // תאריך עברי
-    // const hebrewDate = getHebrewDate();
-    // // שילוב התאריכים
-    // const fullDate = `${gregorianDate} / ${hebrewDate}`;
 
     // הוספת ההוצאה/ההכנסה לרשימה הפנימית
     const expense = { id: Date.now(), fullDate, amount, description, paymentMethod, type }; // מזהה ייחודי מבוסס תאריך
@@ -115,20 +106,8 @@ function addExpense() {
     saveExpensesToLocalStorage();
 }
 
-// function updateTotal() {
-//     // חישוב סך ההכנסות וההוצאות
-//     const total = expenses.reduce((sum, expense) => {
-//         return sum + (expense.type === 'income' ? expense.amount : -expense.amount);
-//     }, 0);
-
-//     document.getElementById('total').innerText = `סך הכל: ${total.toFixed(2)}`;
-// }
 
 function updateTotal(filteredExpenses = expenses) {
-    // if(!filteredExpenses){
-    //     filteredExpenses = expenses;
-    // }
-    // else 
     if (!filteredExpenses||filteredExpenses.length === 0) {
         console.log("No expenses to calculate");
         document.getElementById('total').innerText = "סך הכל: 0";
@@ -229,6 +208,25 @@ function editExpense(expense, row) {
             row.cells[4].innerText = newType === 'income' || newType === 'repayment'? '✔' : '';
             row.cells[5].innerText = newType === 'expense' || newType === 'loan' ? '✔' : '';
 
+            // עדכון הצבע לפי סוג
+            updateRowBackground(row, newType)
+            // switch (newType) {
+            //     case 'income':
+            //         row.style.backgroundColor = '#d4f8d4'; // ירוק - הכנסה
+            //         break;
+            //     case 'expense':
+            //         row.style.backgroundColor = '#f8d4d4'; // אדום - הוצאה
+            //         break;
+            //     case 'loan':
+            //         row.style.backgroundColor = '#fff4d4'; // כתום - הלוואה
+            //         break;
+            //     case 'repayment':
+            //         row.style.backgroundColor = '#d4e3f8'; // כחול - החזר
+            //         break;
+            //     default:
+            //         row.style.backgroundColor = ''; // ברירת מחדל
+            // }
+
             updateTotal();
             saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים
         } else {
@@ -244,5 +242,27 @@ function viewDate(date){
     const hebrewDate = getHebrewDate(date); // שימוש בפונקציה קיימת לתאריך עברי
     return `${gregorianDate} / ${hebrewDate}`; // שילוב התאריכים
 }
+
+
+function updateRowBackground(row, type) {
+    switch (type) {
+        case 'income':
+            row.style.backgroundColor = '#d4f8d4'; // ירוק - הכנסה
+            break;
+        case 'expense':
+            row.style.backgroundColor = '#f8d4d4'; // אדום - הוצאה
+            break;
+        case 'loan':
+            row.style.backgroundColor = '#fff4d4'; // כתום - הלוואה
+            break;
+        case 'repayment':
+            row.style.backgroundColor = '#d4e3f8'; // כחול - החזר
+            break;
+        default:
+            row.style.backgroundColor = ''; // ברירת מחדל
+    }
+}
+
+
 
 document.addEventListener("DOMContentLoaded", loadExpensesFromLocalStorage);

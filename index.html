@@ -64,22 +64,15 @@
     <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: הוצאה- 0, הכנסה- 0</h3>
     <h3 id="total" >סך הכל: 0</h3>
 
-    <label>מתאריך: <input type="date" id="startDate" onchange="filterByDateRange()"></label>
-    <label>עד תאריך: <input type="date" id="endDate" onchange="filterByDateRange()"></label>
+    <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
+    <!-- onchange="filterByDateRange()" -->
+    <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
 
     <!-- טבלת הכנסות והוצאות -->
     <h2>רשימת הכנסות והוצאות:</h2>
     <table id="expenseTable">
         <thead>
             <tr>
-                <!-- <th>תאריך</th>
-                <th>סכום</th>
-                <th>תיאור</th>
-                <th>צורת תשלום</th>
-                <th>הכנסה</th>
-                <th>הוצאה</th>
-                <th>עריכה</th>
-                <th>מחיקה</th> -->
                 <th onclick="sortExpenses('date')">תאריך <span class="sort-icon"></span></th>
                 <th onclick="sortExpenses('amount')">סכום <span class="sort-icon"></span></th>
                 <th onclick="sortExpenses('description')">תיאור <span class="sort-icon"></span></th>
@@ -105,7 +98,6 @@
         <tbody>
         </tbody>
     </table>
-<!--     <h3 id="total">סך הכל: 0</h3> -->
 
     <!-- טעינת קבצי JavaScript -->
     <script src="hebrewDate.js"></script>
