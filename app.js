@@ -40,6 +40,17 @@ function addExpenseToTable(expense) {
     row.insertCell(5).innerText = expense.type === 'expense'  || expense.type === 'loan' ? '✔' : '';
 
 
+    // עמודת סימון (הימנית ביותר)
+    const checkboxCell = row.insertCell(6);
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = expense.isChecked; // מסומן אם השדה בזיכרון הוא true
+    checkbox.addEventListener('change', () => {
+        expense.isChecked = checkbox.checked; // עדכון השדה במערך
+        saveExpensesToLocalStorage(); // שמירה בזיכרון
+    });
+    checkboxCell.appendChild(checkbox);
+
     // עמודת עריכה
     const editCell = row.insertCell(6);
     const editButton = document.createElement('button');
@@ -88,7 +99,7 @@ function addExpense() {
     }
 
     // הוספת ההוצאה/ההכנסה לרשימה הפנימית
-    const expense = { id: Date.now(), fullDate, amount, description, paymentMethod, type }; // מזהה ייחודי מבוסס תאריך
+    const expense = { id: Date.now(), fullDate, amount, description, paymentMethod, type, isChecked: false  }; // מזהה ייחודי מבוסס תאריך
     expenses.push(expense);
     //Date.now(), // מזהה ייחודי מבוסס תאריך
     console.log(expenses);
@@ -176,72 +187,6 @@ function deleteExpense(expense, row) {
     }
 }
 
-// פונקציה לעריכת הוצאה
-function editExpense(expense, row) {
-    console.log("בדיקה");// בדיקה
-    const newFullDate = prompt("עדכן תאריך:", expense.fullDate);
-    const newAmount = parseFloat(prompt("עדכן סכום:", expense.amount));
-    const newDescription = prompt("עדכן תיאור:", expense.description);
-    const newPaymentMethod = prompt("עדכן צורת תשלום:", expense.paymentMethod);
-    const newType = prompt("עדכן סוג (income, expense, loan, repayment):", expense.type);
-
-    if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense'|| newType === 'loan' || newType === 'repayment')) {
-        // עדכון הערך במערך הגלובלי
-        const expenseIndex = expenses.findIndex(e => e.id === expense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
-        console.log("ID לחיפוש:", expense.id);// בדיקה
-        console.log("תוצאה של findIndex:", expenseIndex);// בדיקה
-        if (expenseIndex !== -1) {
-            expenses[expenseIndex] = {
-                id: expense.id, // שמירה על המזהה
-                fullDate: newFullDate,
-                amount: newAmount,
-                description: newDescription,
-                paymentMethod: newPaymentMethod,
-                type: newType
-            };
-
-            // עדכון השורה בטבלה
-            row.cells[0].innerText = newFullDate;
-            row.cells[1].innerText = newAmount.toFixed(2);
-            row.cells[2].innerText = newDescription;
-            row.cells[3].innerText = newPaymentMethod;
-            row.cells[4].innerText = newType === 'income' || newType === 'repayment'? '✔' : '';
-            row.cells[5].innerText = newType === 'expense' || newType === 'loan' ? '✔' : '';
-
-            // עדכון הצבע לפי סוג
-            updateRowBackground(row, newType)
-            // switch (newType) {
-            //     case 'income':
-            //         row.style.backgroundColor = '#d4f8d4'; // ירוק - הכנסה
-            //         break;
-            //     case 'expense':
-            //         row.style.backgroundColor = '#f8d4d4'; // אדום - הוצאה
-            //         break;
-            //     case 'loan':
-            //         row.style.backgroundColor = '#fff4d4'; // כתום - הלוואה
-            //         break;
-            //     case 'repayment':
-            //         row.style.backgroundColor = '#d4e3f8'; // כחול - החזר
-            //         break;
-            //     default:
-            //         row.style.backgroundColor = ''; // ברירת מחדל
-            // }
-
-            updateTotal();
-            saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים
-        } else {
-            console.error("ההוצאה לא נמצאה במערך.");
-        }
-    } else {
-        alert("נתונים לא תקינים, לא ניתן לעדכן.");
-    }
-}
-
-function viewDate(date){
-    const gregorianDate = date.toLocaleDateString("he-IL"); // תאריך לועזי
-    const hebrewDate = getHebrewDate(date); // שימוש בפונקציה קיימת לתאריך עברי
-    return `${gregorianDate} / ${hebrewDate}`; // שילוב התאריכים
-}
 
 
 function updateRowBackground(row, type) {
@@ -263,6 +208,11 @@ function updateRowBackground(row, type) {
     }
 }
 
+function viewDate(date){
+    const gregorianDate = date.toLocaleDateString("he-IL"); // תאריך לועזי
+    const hebrewDate = getHebrewDate(date); // שימוש בפונקציה קיימת לתאריך עברי
+    return `${gregorianDate} / ${hebrewDate}`; // שילוב התאריכים
+}
 
 
 document.addEventListener("DOMContentLoaded", loadExpensesFromLocalStorage);
