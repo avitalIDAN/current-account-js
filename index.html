@@ -11,58 +11,74 @@
 </head>
 <body>
     <h1>מנהל הכנסות והוצאות</h1>
-    <!-- <div id="colorLegend">
-        <p><span style="background-color: #d4f8d4;">&nbsp;&nbsp;&nbsp;</span> הכנסה</p>
-        <p><span style="background-color: #f8d4d4;">&nbsp;&nbsp;&nbsp;</span> הוצאה</p>
-        <p><span style="background-color: #fff4d4;">&nbsp;&nbsp;&nbsp;</span> הלוואה</p>
-        <p><span style="background-color: #d4e3f8;">&nbsp;&nbsp;&nbsp;</span> החזר</p>
-    </div> -->
-    <!-- טופס קלט -->
+
+    <div class="top-section">
+        <!-- חלק שמאלי: הוספה וסך הכל -->
+        <div class="left-section">
+            <!-- טופס קלט -->
      
-    <div class="add-expense-container">
-        <h2>הוספה חדשה</h2>
+            <div class="add-expense-container">
+                <h2>הוספה חדשה</h2>
 
-        <!-- הכנסה, הוצאה או הלוואה -->
-        <label style="color:rgb(0, 255, 0)">
-            <input type="radio" name="type" value="income"> הכנסה
-        </label>
-        <label style="color:rgb(255, 0, 0)">
-            <input type="radio" name="type" value="expense" > הוצאה
-        </label>
-        <label style="color:rgb(255, 0, 0)">
-            <input type="radio" name="type" value="loan" > הלוותי / החזרתי
-        </label>
-        <label style="color:rgb(0, 255, 0)">
-            <input type="radio" name="type" value="repayment" > לוויתי/ החזירו
-        </label>
-        
-        <br><br>
-        <label for="amount">סכום:</label>
-        <input type="number" id="amount" placeholder="הכנס סכום">
-        <br><br>
+                <!-- הכנסה, הוצאה או הלוואה -->
+                <label style="color:rgb(0, 255, 0)">
+                    <input type="radio" name="type" value="income"> הכנסה
+                </label>
+                <label style="color:rgb(255, 0, 0)">
+                    <input type="radio" name="type" value="expense" > הוצאה
+                </label>
+                <label style="color:rgb(255, 0, 0)">
+                    <input type="radio" name="type" value="loan" > הלוותי / החזרתי
+                </label>
+                <label style="color:rgb(0, 255, 0)">
+                    <input type="radio" name="type" value="repayment" > לוויתי/ החזירו
+                </label>
+                
+                <br><br>
+                <label for="amount">סכום:</label>
+                <input type="number" id="amount" placeholder="הכנס סכום">
+                <br><br>
 
-        <label for="description">תיאור:</label>
-        <input type="text" id="description" placeholder="הכנס תיאור">
-        <br><br>
+                <label for="description">תיאור:</label>
+                <input type="text" id="description" placeholder="הכנס תיאור">
+                <br><br>
 
-        <label for="paymentMethod">צורת תשלום:</label>
-        <select id="paymentMethod">
-            <option value="מזומן">מזומן</option>
-            <option value="אשראי">אשראי</option>
-            <option value="העברה בנקאית">העברה בנקאית</option>
-            <option value="פייבוקס">פייבוקס</option>
-        </select>
-        <br><br>
+                <label for="paymentMethod">צורת תשלום:</label>
+                <select id="paymentMethod">
+                    <option value="מזומן">מזומן</option>
+                    <option value="אשראי">אשראי</option>
+                    <option value="העברה בנקאית">העברה בנקאית</option>
+                    <option value="פייבוקס">פייבוקס</option>
+                </select>
+                <br><br>
 
-        <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
-        <br><br>
-        <button onclick="addExpense()">הוסף</button>
+                <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
+                <br><br>
+                <button onclick="addExpense()">הוסף</button>
+            </div>
+
+            <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
+            <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
+            <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: הוצאה- 0, הכנסה- 0</h3>
+            <h3 id="total" >סך הכל: 0</h3>
+
+        </div>
+    
+        <!-- חלק ימני: כפתור תקציב -->
+        <div class="right-section">
+            <div id="budgetDisplay">
+                <h3>תקציב חודשי: 0 ₪</h3>
+                <h3>הסכום שנוצל: 0 ₪</h3>
+                <h3>ניצול חודשי: 0 %</h3>
+                <p>יום תחילת התקציב הוא ה-- בחודש</p> 
+            </div>
+            
+            <button id="openBudgetModal" onclick="openBudgetModal()">הגדרת תקציב</button>
+            
+        </div>
     </div>
+    
 
-    <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
-    <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
-    <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: הוצאה- 0, הכנסה- 0</h3>
-    <h3 id="total" >סך הכל: 0</h3>
 
     <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
     <!-- onchange="filterByDateRange()" -->
@@ -192,8 +208,36 @@
         </div>
     </div>
 
+
+    <div id="budgetModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeBudgetModal()">&times;</span>
+            <h2>הגדרת תקציב חודשי</h2>
+            <form id="budgetForm">
+                <label for="budgetAmount">סכום תקציב:</label>
+                <input type="number" id="budgetAmount" placeholder="הזן סכום תקציב" required>
+                <br><br>
+    
+                <!-- <label for="budgetStartDate">תאריך התחלה:</label>
+                <input type="date" id="budgetStartDate" required>
+                <br><br>
+    
+                <label for="budgetEndDate">תאריך סיום:</label>
+                <input type="date" id="budgetEndDate" required>
+                <br><br> -->
+ 
+                <label for="budgetEndDate">תאריך התחלה וסיום בחודש (לדוגמה עשירי בחודש):</label>
+                <input type="number" id="budgetStartEndDay"  min="1" max="28" placeholder="הזן מספר בין 1 ל-28" style="width: 150px" required>
+                <br><br>
+
+                <button type="button" onclick="saveBudget()">שמור תקציב</button>
+            </form>
+        </div>
+    </div>
+    
      
     <!-- טעינת קבצי JavaScript -->
+    <script src="budgetManagement.js"></script>
     <script src="editExpense.js"></script>
     <script src="hebrewDate.js"></script>
     <script src="table.js"></script>

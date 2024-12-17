@@ -1,3 +1,27 @@
+/* חלוקת האזור העליון */
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* יישור פריטים לפי החלק העליון */
+    margin-bottom: 20px; /* רווח מתחת */
+}
+
+/* חלק שמאלי */
+.left-section {
+    flex: 1; /* החלק השמאלי יתפוס יותר מקום */
+}
+
+/* חלק ימני */
+.right-section {
+    flex: 1; /* החלק הימני יתפוס פחות מקום */
+    display: flex;
+    justify-content: flex-end; /* כפתור התקציב בצד ימין */
+    align-items: center;
+}
+
+
+
+
 .add-expense-container {
     border: 2px solid #007bff; /* צבע המסגרת */
     border-radius: 8px; /* פינות מעוגלות */
