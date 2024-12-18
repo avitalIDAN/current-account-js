@@ -27,10 +27,6 @@ function addExpenseToTable(expense) {
 
     // צבע לפי סוג
     updateRowBackground(row, expense.type)
-    // if (expense.type === 'income') row.style.backgroundColor = '#d4f8d4'; // ירוק
-    // if (expense.type === 'expense') row.style.backgroundColor = '#f8d4d4'; // אדום
-    // if (expense.type === 'loan') row.style.backgroundColor = '#fff4d4'; // כתום
-    // if (expense.type === 'repayment') row.style.backgroundColor = '#d4e3f8'; // כחול
 
     row.insertCell(0).innerText = expense.fullDate;
     row.insertCell(1).innerText = expense.amount.toFixed(2);
@@ -127,12 +123,12 @@ function updateTotal(filteredExpenses = expenses) {
         return;
     }
     // חישוב סך ההכנסות
-    const totalIncome = filteredExpenses //expenses
+    const totalIncome = filteredExpenses 
         .filter(expense => expense.type === 'income')
         .reduce((sum, expense) => sum + expense.amount, 0);
 
     // חישוב סך ההוצאות
-    const totalExpense = filteredExpenses //expenses
+    const totalExpense = filteredExpenses 
         .filter(expense => expense.type === 'expense')
         .reduce((sum, expense) => sum + expense.amount, 0);
 

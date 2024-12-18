@@ -10,11 +10,9 @@ function sortExpenses(criteria) {
     // עדכון מצב המיון
     if (sortState.column === criteria) {
         sortState.order = sortState.order === "desc" ? "asc" : sortState.order === "asc" ? null : "desc";
-        //sortState.order = sortState.order === "asc" ? "desc" : sortState.order === "desc" ? null : "asc";
     } else {
         sortState.column = criteria;
         sortState.order = "desc"; // ברירת מחדל: מיון הפוך
-        //sortState.order = "asc";
     }
 
     // בדיקה אם צריך לבטל את המיון
@@ -85,16 +83,10 @@ function filterExpenses(type = null) {
         const ByDateRange = (!startDate || expenseDate >= new Date(startDate)) &&
                            (!endDate || expenseDate <= new Date(endDate));
 
-
-        //console.log("Expense being checked:", expense); // בדיקה שהשדות קיימים בכל פריט
-
         const dateFilter = filters[0].value ? expense.fullDate && expense.fullDate.includes(filters[0].value) : true;
         const amountFilter = filters[1].value ? expense.amount && expense.amount === parseFloat(filters[1].value) : true;
         const descriptionFilter = filters[2].value ? expense.description && expense.description.includes(filters[2].value) : true;
         const paymentMethodFilter = filters[3].value ? expense.paymentMethod && expense.paymentMethod.includes(filters[3].value) : true;
-        //const typeFilter = filters[4].value ? expense.type && expense.type.includes(filters[4].value) : true;
-        // סינון לפי סוג
-        //const typeFilter = type ? expense.type === type : true;
 
         // סינון לפי סוג
         const typeFilter = type
@@ -109,26 +101,9 @@ function filterExpenses(type = null) {
         return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter && ByDateRange;//filterByDateRange(expense);
     });
 
-    //console.log("Filtered results:", filtered); // בדיקה שהתוצאה סבירה
-
     renderTable(filtered);
     updateTotal(filtered); // חישוב סך הכל לפי המסונן
 }
-
-// function filterByDateRange(expense) {
-//     const startDate = document.getElementById('startDate').value;
-//     const endDate = document.getElementById('endDate').value;
-
-//     //const filtered = expenses.filter(expense => {
-//         const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
-//         return (!startDate || expenseDate >= new Date(startDate)) &&
-//                (!endDate || expenseDate <= new Date(endDate));
-//     //});
-//     //renderTable(filtered);
-//     //updateTotal(filtered); // חישוב סך הכל לפי טווח התאריכים
-// }
-
-
 
 function renderTable(expensesArray) {
     const tableBody = document.getElementById('expenseTable').querySelector('tbody');

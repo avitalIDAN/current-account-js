@@ -1,76 +1,7 @@
 function editExpense(expense, row) {
-// פונקציה לעריכת הוצאה
+    // פונקציה לעריכת הוצאה
     openEditModal(expense, row);
 }
-
-
-
-// function editExpense(expense, row) {
-//     console.log("בדיקה");// בדיקה
-//     // const newFullDate = prompt("עדכן תאריך:", expense.fullDate);
-//     // const newAmount = parseFloat(prompt("עדכן סכום:", expense.amount));
-//     // const newDescription = prompt("עדכן תיאור:", expense.description);
-//     // const newPaymentMethod = prompt("עדכן צורת תשלום:", expense.paymentMethod);
-//     // const newType = prompt("עדכן סוג (income, expense, loan, repayment):", expense.type);
-
-//     const newExpense = openEditModal(expense, row)
-//     const newFullDate = newExpense.fullDate;
-//     const newAmount = newExpense.amount;
-//     const newDescription = newExpense.description;
-//     const newPaymentMethod = newExpense.paymentMethod;
-//     const newType = newExpense.type;
-
-//     if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense'|| newType === 'loan' || newType === 'repayment')) {
-//         // עדכון הערך במערך הגלובלי
-//         const expenseIndex = expenses.findIndex(e => e.id === expense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
-//         console.log("ID לחיפוש:", expense.id);// בדיקה
-//         console.log("תוצאה של findIndex:", expenseIndex);// בדיקה
-//         if (expenseIndex !== -1) {
-//             expenses[expenseIndex] = {
-//                 id: expense.id, // שמירה על המזהה
-//                 fullDate: newFullDate,
-//                 amount: newAmount,
-//                 description: newDescription,
-//                 paymentMethod: newPaymentMethod,
-//                 type: newType
-//             };
-
-//             // עדכון השורה בטבלה
-//             row.cells[0].innerText = newFullDate;
-//             row.cells[1].innerText = newAmount.toFixed(2);
-//             row.cells[2].innerText = newDescription;
-//             row.cells[3].innerText = newPaymentMethod;
-//             row.cells[4].innerText = newType === 'income' || newType === 'repayment'? '✔' : '';
-//             row.cells[5].innerText = newType === 'expense' || newType === 'loan' ? '✔' : '';
-
-//             // עדכון הצבע לפי סוג
-//             updateRowBackground(row, newType)
-//             // switch (newType) {
-//             //     case 'income':
-//             //         row.style.backgroundColor = '#d4f8d4'; // ירוק - הכנסה
-//             //         break;
-//             //     case 'expense':
-//             //         row.style.backgroundColor = '#f8d4d4'; // אדום - הוצאה
-//             //         break;
-//             //     case 'loan':
-//             //         row.style.backgroundColor = '#fff4d4'; // כתום - הלוואה
-//             //         break;
-//             //     case 'repayment':
-//             //         row.style.backgroundColor = '#d4e3f8'; // כחול - החזר
-//             //         break;
-//             //     default:
-//             //         row.style.backgroundColor = ''; // ברירת מחדל
-//             // }
-
-//             updateTotal();
-//             saveExpensesToLocalStorage(); // שמירת הנתונים המעודכנים
-//         } else {
-//             console.error("ההוצאה לא נמצאה במערך.");
-//         }
-//     } else {
-//         alert("נתונים לא תקינים, לא ניתן לעדכן.");
-//     }
-// }
 
 let currentRow = null; // שמירת השורה הנוכחית
 let currentExpense = null; // שמירת ההוצאה הנוכחית
@@ -84,7 +15,7 @@ function openEditModal(expense, row) {
     document.getElementById('editAmount').value = expense.amount;
     document.getElementById('editDescription').value = expense.description;
     document.getElementById('editPaymentMethod').value = expense.paymentMethod;
-    //document.getElementById('editType').value = expense.type;
+
     // סוג - נבחר את סוג ההוצאה (income, expense, loan, repayment)
     const typeRadios = document.getElementsByName('editType');
     typeRadios.forEach(radio => {
@@ -110,7 +41,7 @@ function saveEdit() {
     const newAmount = parseFloat(document.getElementById('editAmount').value);
     const newDescription = document.getElementById('editDescription').value;
     const newPaymentMethod = document.getElementById('editPaymentMethod').value;
-    //const newType = document.getElementById('editType').value;
+
     const typeRadios = document.getElementsByName('editType');
     let newType = null;
     for (const radio of typeRadios) {
@@ -122,7 +53,7 @@ function saveEdit() {
 
     if (!isNaN(newAmount) && newDescription && (newType === 'income' || newType === 'expense'|| newType === 'loan' || newType === 'repayment')) {
         // עדכון הערך במערך הגלובלי
-        const expenseIndex = expenses.findIndex(e => e.id === currentExpense.id);//expenses.indexOf(expense); // מוצאים את המיקום של האובייקט במערך
+        const expenseIndex = expenses.findIndex(e => e.id === currentExpense.id); // מוצאים את המיקום של האובייקט במערך
         console.log("ID לחיפוש:", currentExpense.id);// בדיקה
         console.log("תוצאה של findIndex:", expenseIndex);// בדיקה
         if (expenseIndex !== -1) {
@@ -135,17 +66,6 @@ function saveEdit() {
                 paymentMethod: newPaymentMethod,
                 type: newType
             });
-
-
-
-            // expenses[expenseIndex] = {
-            //     id: currentExpense.id, // שמירה על המזהה
-            //     fullDate: newFullDate,
-            //     amount: newAmount,
-            //     description: newDescription,
-            //     paymentMethod: newPaymentMethod,
-            //     type: newType
-            // };
 
             // עדכון השורה בטבלה
             currentRow.cells[0].innerText = newFullDate;
