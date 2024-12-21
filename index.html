@@ -10,17 +10,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>מנהל הכנסות והוצאות</h1>
+    
 
     <div class="top-section">
         <!-- חלק שמאלי: הוספה וסך הכל -->
         <div class="left-section">
+            <h1>מנהל הכנסות והוצאות</h1>
+    
+            <br>
             <!-- טופס קלט -->
-     
-            <div class="add-expense-container">
+            <button id="openAdd" onclick="openAddModal()">הוסף הכנסה/ הוצאה חדשה</button>
+            <br>
+            <!-- <div class="add-expense-container">
                 <h2>הוספה חדשה</h2>
 
-                <!-- הכנסה, הוצאה או הלוואה -->
+                <!-- הכנסה, הוצאה או הלוואה --
                 <label style="color:rgb(0, 255, 0)">
                     <input type="radio" name="type" value="income"> הכנסה
                 </label>
@@ -54,35 +58,44 @@
 
                 <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
                 <br><br>
-                <button onclick="addExpense()">הוסף</button>
-            </div>
+                <button id="addButton" onclick="addExpense()">הוסף</button>
+            </div> -->
 
             <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
             <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
             <h3 id="loanSummary" style="display: none; color:rgb(0, 0, 255)">סך הלוואות: הוצאה- 0, הכנסה- 0</h3>
             <h3 id="total" >סך הכל: 0</h3>
 
+            <br>
+
+            <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
+            <!-- onchange="filterByDateRange()" -->
+            <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
+
         </div>
     
-        <!-- חלק ימני: כפתור תקציב -->
+        
+        <!-- חלק ימני: תקציב -->
         <div class="right-section">
             <div id="budgetDisplay">
                 <h3>תקציב חודשי: 0 ₪</h3>
                 <h3>הסכום שנוצל: 0 ₪</h3>
                 <h3>ניצול חודשי: 0 %</h3>
                 <p>יום תחילת התקציב הוא ה-- בחודש</p> 
+                
+            </div>
+
+            <button id="openBudgetModal" onclick="openBudgetModal()">הגדרת תקציב</button>            
+            
+            <br><br>
+            <div id="chartContainer" style="width: 80%; margin: auto;">
+                <canvas id="budgetChart"></canvas>
             </div>
             
-            <button id="openBudgetModal" onclick="openBudgetModal()">הגדרת תקציב</button>
-            
+
         </div>
     </div>
     
-
-
-    <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
-    <!-- onchange="filterByDateRange()" -->
-    <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
 
     <!-- טבלת הכנסות והוצאות -->
     <h2>רשימת הכנסות והוצאות:</h2>
@@ -115,6 +128,52 @@
         <tbody>
         </tbody>
     </table>
+
+    <!-- חלון הוספה -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeaddModal()">&times;</span>
+
+            <h2>הוספה חדשה</h2>
+
+            <!-- הכנסה, הוצאה או הלוואה -->
+            <label style="color:rgb(0, 255, 0)">
+                <input type="radio" name="type" value="income"> הכנסה
+            </label>
+            <label style="color:rgb(255, 0, 0)">
+                <input type="radio" name="type" value="expense" > הוצאה
+            </label>
+            <label style="color:rgb(255, 0, 0)">
+                <input type="radio" name="type" value="loan" > הלוותי / החזרתי
+            </label>
+            <label style="color:rgb(0, 255, 0)">
+                <input type="radio" name="type" value="repayment" > לוויתי/ החזירו
+            </label>
+            
+            <br><br>
+            <label for="amount">סכום:</label>
+            <input type="number" id="amount" placeholder="הכנס סכום">
+            <br><br>
+
+            <label for="description">תיאור:</label>
+            <input type="text" id="description" placeholder="הכנס תיאור">
+            <br><br>
+
+            <label for="paymentMethod">צורת תשלום:</label>
+            <select id="paymentMethod">
+                <option value="מזומן">מזומן</option>
+                <option value="אשראי">אשראי</option>
+                <option value="העברה בנקאית">העברה בנקאית</option>
+                <option value="פייבוקס">פייבוקס</option>
+            </select>
+            <br><br>
+
+            <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
+            <br><br>
+            <button id="addButton" onclick="addExpense()">הוסף</button>
+        </div>
+
+    </div>
 
     <!-- חלון עריכה -->
     <div id="editModal" class="modal">
@@ -170,7 +229,7 @@
         </div>
     </div>
 
-
+    <!-- חלון עריכת תקציב -->
     <div id="budgetModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeBudgetModal()">&times;</span>
@@ -191,6 +250,9 @@
     
      
     <!-- טעינת קבצי JavaScript -->
+     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="budgetManagement.js"></script>
     <script src="editExpense.js"></script>
     <script src="hebrewDate.js"></script>

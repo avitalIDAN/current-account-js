@@ -9,6 +9,8 @@
 /* חלק שמאלי */
 .left-section {
     flex: 1; /* החלק השמאלי יתפוס יותר מקום */
+    align-items: center;
+    
 }
 
 /* חלק ימני */
@@ -20,7 +22,17 @@
 }
 
 
-
+#openAdd{
+    background-color: #f9f9f9;
+    border: 2px solid #007bff; /* צבע המסגרת */
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
 
 .add-expense-container {
     border: 2px solid #007bff; /* צבע המסגרת */
@@ -139,4 +151,58 @@ th {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+.right-section {
+    text-align: center; /* מרכז טקסט */
+    padding: 15px; /* ריווח פנימי */
+    border: 2px solid #ddd; /* מסגרת */
+    border-radius: 10px; /* פינות מעוגלות */
+    background-color: #f9f9f9; /* רקע בהיר */
+    margin: 15px 0; /* ריווח חיצוני */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה */
+}
+
+#budgetDisplay h3 {
+    margin: 10px 0; /* ריווח בין הכותרות */
+    color: #333; /* צבע טקסט */
+}
+
+#budgetDisplay p {
+    font-size: 14px; /* גודל פונט קטן */
+    color: #666; /* צבע טקסט משני */
+}
+
+/* . */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* מרכז את האלמנטים אופקית */
+}
+
+#budgetDisplay {
+    width: 100%; /* מבטיח שהתקציב יתפוס את כל השורה */
+}
+
+#openBudgetModal {
+    margin-top: 15px; /* רווח מעל הכפתור */
+}
+
+
+#budgetDisplay h3:nth-child(3) {
+    color: green; /* שינוי דינמי לפי אחוז ניצול התקציב */
+}
+
+#budgetDisplay {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* גרף */
+#chartContainer {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
 }

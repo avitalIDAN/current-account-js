@@ -20,6 +20,15 @@ function loadExpensesFromLocalStorage() {
 }
 
 
+function openAddModal() {
+    // הצגת ה-modal
+    document.getElementById("addModal").style.display = "block";
+}
+
+function closeAddModal() {
+    document.getElementById("addModal").style.display = "none";
+}
+
 function addExpenseToTable(expense) {
     // הוספת ההוצאה/ההכנסה לטבלה
     const tableBody = document.getElementById('expenseTable').querySelector('tbody');
@@ -102,6 +111,11 @@ function addExpense() {
 
     addExpenseToTable(expense);
 
+    // הוספה לתקציב
+    if(type=="expense"){
+        addExpenseToBudget(amount, dateInput);
+    }
+    
     // איפוס שדות הקלט לאחר הוספה
     amountInput.value = '';
     descriptionInput.value = '';
@@ -109,6 +123,7 @@ function addExpense() {
     dateInput.value = ''; // איפוס שדה התאריך
     typeInputs.forEach(input => input.checked = false);
 
+    closeAddModal();
     updateTotal();
     saveExpensesToLocalStorage();
 }
@@ -178,6 +193,12 @@ function deleteExpense(expense, row) {
 
         // עדכון הסך הכל
         updateTotal();
+
+        // עדכון לתקציב
+        if(expense.type =="expense"){
+            const date = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
+            deleteExpenseFromBudget(expense.amount, date);
+        }
     } else {
         console.error("ההוצאה לא נמצאה במערך ולא ניתן למחוק אותה.");
     }

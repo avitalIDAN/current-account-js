@@ -56,6 +56,22 @@ function saveEdit() {
         const expenseIndex = expenses.findIndex(e => e.id === currentExpense.id); // מוצאים את המיקום של האובייקט במערך
         console.log("ID לחיפוש:", currentExpense.id);// בדיקה
         console.log("תוצאה של findIndex:", expenseIndex);// בדיקה
+
+        // עדכון בתקציב
+        // if(newType === 'expense' && expenses[expenseIndex].type === 'expense'){
+        //     const oldAmount = expenses[expenseIndex].amount;
+        //     const oldDate = new Date(expenses[expenseIndex].fullDate.split(" / ")[0].split('.').reverse().join('-'));
+        //     editExpenseInBudget(oldAmount, newAmount, oldDate, newDate) 
+        // }
+        if(expenses[expenseIndex].type === 'expense'){
+            const oldAmount = expenses[expenseIndex].amount;
+            const oldDate = new Date(expenses[expenseIndex].fullDate.split(" / ")[0].split('.').reverse().join('-'));
+            deleteExpenseFromBudget(oldAmount, oldDate) 
+        }
+        if(newType === 'expense'){
+            addExpenseToBudget(newAmount, newDate) 
+        }
+
         if (expenseIndex !== -1) {
             // עדכון האובייקט
             Object.assign(expenses[expenseIndex], {
