@@ -21,45 +21,6 @@
             <!-- טופס קלט -->
             <button id="openAdd" onclick="openAddModal()">הוסף הכנסה/ הוצאה חדשה</button>
             <br>
-            <!-- <div class="add-expense-container">
-                <h2>הוספה חדשה</h2>
-
-                <!-- הכנסה, הוצאה או הלוואה --
-                <label style="color:rgb(0, 255, 0)">
-                    <input type="radio" name="type" value="income"> הכנסה
-                </label>
-                <label style="color:rgb(255, 0, 0)">
-                    <input type="radio" name="type" value="expense" > הוצאה
-                </label>
-                <label style="color:rgb(255, 0, 0)">
-                    <input type="radio" name="type" value="loan" > הלוותי / החזרתי
-                </label>
-                <label style="color:rgb(0, 255, 0)">
-                    <input type="radio" name="type" value="repayment" > לוויתי/ החזירו
-                </label>
-                
-                <br><br>
-                <label for="amount">סכום:</label>
-                <input type="number" id="amount" placeholder="הכנס סכום">
-                <br><br>
-
-                <label for="description">תיאור:</label>
-                <input type="text" id="description" placeholder="הכנס תיאור">
-                <br><br>
-
-                <label for="paymentMethod">צורת תשלום:</label>
-                <select id="paymentMethod">
-                    <option value="מזומן">מזומן</option>
-                    <option value="אשראי">אשראי</option>
-                    <option value="העברה בנקאית">העברה בנקאית</option>
-                    <option value="פייבוקס">פייבוקס</option>
-                </select>
-                <br><br>
-
-                <label for="expenseDate">תאריך: <input type="date" id="expenseDate"></label>
-                <br><br>
-                <button id="addButton" onclick="addExpense()">הוסף</button>
-            </div> -->
 
             <h3 id="totalIncome" style="color:rgb(0, 255, 0)">סך הכנסות: 0</h3>
             <h3 id="totalExpense" style="color:rgb(255, 0, 0)">סך הוצאות: 0</h3>
@@ -69,7 +30,6 @@
             <br>
 
             <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
-            <!-- onchange="filterByDateRange()" -->
             <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
 
         </div>
@@ -88,8 +48,18 @@
             <button id="openBudgetModal" onclick="openBudgetModal()">הגדרת תקציב</button>            
             
             <br><br>
-            <div id="chartContainer" style="width: 80%; margin: auto;">
+            <!-- <div id="chartContainer" >
                 <canvas id="budgetChart"></canvas>
+            </div>
+            <button id="prevMonths" onclick="shiftMonths(-1)">חודשים קודמים</button>
+            <button id="nextMonths" onclick="shiftMonths(1)">חודשים הבאים</button> -->
+            
+            <div id="chartMessage" style="text-align: center; font-size: 16px; font-weight: bold;"></div>
+
+            <div id="chartContainer" style="position: relative;">
+                <button id="prevMonths" onclick="shiftMonths(-1)" class="nav-button left-button">&gt;</button>
+                <canvas id="budgetChart"></canvas>
+                <button id="nextMonths" onclick="shiftMonths(1)" class="nav-button right-button">&lt;</button>
             </div>
             
 
@@ -110,7 +80,7 @@
                 <th onclick="sortExpenses('expense')">הוצאה <span class="sort-icon"></span></th>
                 <th>עריכה</th>
                 <th>מחיקה</th> 
-                <th></th> 
+                <th onclick="sortExpenses('check')"><span class="sort-icon"></span></th> 
             </tr>
             <tr>
                 <th><input type="text" placeholder="סנן לפי תאריך" oninput="filterExpenses()"></th>
@@ -132,7 +102,7 @@
     <!-- חלון הוספה -->
     <div id="addModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeaddModal()">&times;</span>
+            <span class="close-btn" onclick="closeAddModal()">&times;</span>
 
             <h2>הוספה חדשה</h2>
 
@@ -243,6 +213,55 @@
                 <input type="number" id="budgetStartEndDay"  min="1" max="28" placeholder="הזן מספר בין 1 ל-28" style="width: 150px" required>
                 <br><br>
 
+
+                <!-- כפתור הצגת הגדרות משפטים -->
+                <!-- <button id="toggleMessageConfig" onclick="toggleMessageConfig()">הגדרת משפטי מוטיבציה והצלחה</button> -->
+                <label>
+                    <input type="checkbox" id="toggleMessageCheckbox" onchange="toggleMessageConfig()" />
+                    עם משפטי עידוד
+                </label>
+                <br>
+                <div id="messageConfigContainer" style="display: none;">
+                    <h3>משפטי הצלחה</h3>
+                    <div id="successMessages">
+                        <div class="input-group">
+                            <label>אחרי 10 ימים (עם ניצול של פחות מ-30%):</label>
+                            <input id="good10" type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>אחרי 20 יום (עם ניצול של פחות מ60 אחוז):</label>
+                            <input id="good20" type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>יום אחרון של החודש(עם ניצול של פחות מ90 אחוז):</label>
+                            <input id="good30" type="text">
+                        </div>
+                    </div>
+                    <h3>משפטי מוטיבציה</h3>
+                    <div id="motivationMessages">
+                        <div class="input-group">
+                            <label> 10 ימים ראשונים (עם ניצול של יותר מ-35%):</label>
+                            <input id="bad10" type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>אחרי 20 יום (עם ניצול של יותר מ70 אחוז):</label>
+                            <input id="bad20" type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>ימים אחרונים של החודש(עם ניצול של 99 אחוז):</label>
+                            <input id="bad30" type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>חריגה מהתקציב: </label>
+                            <input id="badWarning" type="text">
+                        </div>
+                    </div>
+                    
+                    <!-- <h4>חריגה מהתקציב: </h4>
+                    <input type="text" value="חריגה מהתקציב!"> -->
+                </div>
+
+                <br>
                 <button type="button" onclick="saveBudget()">שמור תקציב</button>
             </form>
         </div>

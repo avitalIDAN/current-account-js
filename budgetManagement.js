@@ -2,7 +2,23 @@ const budget = {
     totalBudget: 0, // סכום התקציב
     startEndDay: null, // יום התחלה וסיום בחודש
     usedBudget: 0, // סכום שנוצל (מתעדכן אוטומטית)
-    months: []       // אובייקטים עבור כל חודש (כולל הוצאות, תאריכים וכו')
+    months: [],       // אובייקטים עבור כל חודש (כולל הוצאות, תאריכים וכו')
+    ifMessages: false,
+    messages: {
+        success: [
+            { days: 10, usage: 30, message: "כבר עברו 10 ימים והשארת מספיק תקציב לחודש הקרוב!" },
+            { days: 20, usage: 60, message: "רוב החודש מאחוריך, והשארת דיי תקציב לסיים את החודש בכיף:)" },
+            { days: 28, usage: 90, message: "אפשר להתפנק קצת בקרוב מתחיל תקציב חדש;)" }
+        ],
+        motivation: [
+            { days: 10, usage: 35, message: "רק התחלנו את החודש כדאי להשאיר תקציב לאורך כל החודש" },
+            { days: 20, usage: 70, message: "כבר עבר רוב החודש אך עדיין 10 ימים מלפנינו! אל תשכח" },
+            { days: 28, usage: 99, message: "עוצר קניות עד תחילת התקציב הבא" }
+        ],
+        warning: [
+            { message: "חריגה מהתקציב!" }
+        ]
+    }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,6 +36,8 @@ function loadBudgetFromStorage() {
         budget.totalBudget = parsedBudget.totalBudget || 0;
         budget.startEndDay = parsedBudget.startEndDay || null;
         budget.usedBudget = parsedBudget.usedBudget || 0;
+        budget.ifMessages = parsedBudget.ifMessages || false;
+        budget.messages = parsedBudget.messages || budget.messages;
         
         // שחזור החודשים כמופעים של MonthlyBudget
         budget.months = parsedBudget.months || [];
@@ -36,34 +54,9 @@ function loadBudgetFromStorage() {
             return newMonth;
         });
 
-        //??? expenses empty..
-        // budget.months= []; // איפוס רשימת החודשים                    
-        // budget.usedBudget = 0;// איפוס ניצול התקציב
-        // UpdateListDates();
-        // updateBudgetDisplay();
     }
     console.log(budget.months);
 
-//     // טיפול בעריכה מחיקה הוספה
-//     const addButton = document.getElementById("addButton");
-
-//     // הוסף אירוע לחיצה
-//     addButton.addEventListener("click", function() {
-//         //alert("הכפתור נלחץ!");??
-// });
-
-// document.addEventListener("expenseAdded", (e) => {
-//     updateMonthData(e.detail.expense, "add");
-// });
-
-// document.addEventListener("expenseEdited", (e) => {
-//     updateMonthData(e.detail.oldExpense, "delete");
-//     updateMonthData(e.detail.newExpense, "add");
-// });
-
-// document.addEventListener("expenseDeleted", (e) => {
-//     updateMonthData(e.detail.expense, "delete");
-// });
 }
 
 function openBudgetModal() {
@@ -76,6 +69,30 @@ function openBudgetModal() {
         budgetAmountInput.value = budget.totalBudget.toFixed(2); // הצבת התקציב הנוכחי
         budgetStartEndDayInput.value = budget.startEndDay || ""; // הצבת יום תחילת התקציב
     }
+
+    //משפטי עידוד 
+
+    const checkbox = document.getElementById("toggleMessageCheckbox");
+    checkbox.checked = budget.ifMessages;
+    toggleMessageConfig();
+
+    const good10 = document.getElementById("good10");
+    const good20 = document.getElementById("good20");
+    const good30 = document.getElementById("good30");
+    const bad10 = document.getElementById("bad10");
+    const bad20 = document.getElementById("bad20");
+    const bad30 = document.getElementById("bad30");
+    const badWarning = document.getElementById("badWarning");
+
+    good10.value = budget.messages.success[0].message;
+    good20.value = budget.messages.success[1].message;
+    good30.value = budget.messages.success[2].message;
+
+    bad10.value = budget.messages.motivation[0].message;
+    bad20.value = budget.messages.motivation[1].message;
+    bad30.value = budget.messages.motivation[2].message;
+    
+    badWarning.value = budget.messages.warning[0].message;
 
     // הצגת ה-modal
     document.getElementById("budgetModal").style.display = "block";
@@ -96,6 +113,7 @@ function updateBudgetDisplay() {
     const usagePercentage = budget.totalBudget > 0 
     ? (budget.usedBudget / budget.totalBudget * 100).toFixed(2) 
     : 0;
+    budget.startEndDay = budget.startEndDay ? budget.startEndDay : "--";
     budgetDisplay.innerHTML = `
         <h3>תקציב חודשי: ${budget.totalBudget.toFixed(2)} ₪</h3>
         <h3>הסכום שנוצל: ${budget.usedBudget.toFixed(2)} ₪</h3>
@@ -104,6 +122,8 @@ function updateBudgetDisplay() {
     `;
 
     renderBudgetChart();     // יצירת הגרף
+
+    checkBudgetStatus();
 }
 
 function UpdateListDates(){
@@ -115,6 +135,131 @@ function UpdateListDates(){
 
     });
 }
+
+// פונקציה להצגת הגדרות משפטים
+// function toggleMessageConfig() {
+//     const messageConfig = document.getElementById("messageConfig");
+//     messageConfig.style.display = messageConfig.style.display === "none" ? "block" : "none";
+// }
+function toggleMessageConfig() {
+    const messageConfigContainer = document.getElementById("messageConfigContainer");
+    const checkbox = document.getElementById("toggleMessageCheckbox");
+
+    // הצגת או הסתרת הקונטיינר לפי מצב ה-checkbox
+    if (checkbox.checked) {
+        budget.ifMessages = true;
+        messageConfigContainer.style.display = "block"; // הצגה
+    } else {
+        budget.ifMessages = false;
+        messageConfigContainer.style.display = "none"; // הסתרה
+    }
+    // שמירת התקציב ב-localStorage
+    localStorage.setItem("budget", JSON.stringify(budget));
+}
+
+
+function checkBudgetStatus() {
+    if(!budget.ifMessages){
+        document.getElementById("chartMessage").value = "";
+        return;
+    }
+    const usagePercentage = (budget.usedBudget / budget.totalBudget) * 100;
+
+    let message = "";
+    let color = "black";
+
+    if(usagePercentage>100){
+        //updateChartLabel(message, color)
+        message = budget.messages.warning[0].message;
+        color = "red";
+        alert(message);
+    }
+    
+    const currentDate = new Date();
+
+    // אם החודש הנוכחי לא תואם לחודש האחרון ב-budget, נעדכן
+    const currentMonthObject = budget.months.find(month => month.isDateInBudgetRange(currentDate));
+
+    if (!currentMonthObject || currentMonthObject.expenses==0) {
+        message = "לא הוצאת בכלל החודש!";
+    }
+    else{
+        const rangeDays = getDates(currentMonthObject.startDate, currentDate);
+        if (rangeDays>=28) {
+            if (usagePercentage<=budget.messages.success[2].usage) {
+                message = budget.messages.success[2].message;
+                color = "green";
+            } else if (usagePercentage>=budget.messages.motivation[2].usage) {
+                message = budget.messages.motivation[2].message;
+                color = "red";
+            }
+        }
+        else if (rangeDays>=20) {
+            if (usagePercentage<=budget.messages.success[1].usage) {
+                message = budget.messages.success[1].message;
+                color = "green";
+            } else if (usagePercentage>=budget.messages.motivation[1].usage) {
+                message = budget.messages.motivation[1].message;
+                color = "red";
+            }
+        }
+        else if (rangeDays>=10) {
+            if (usagePercentage<=budget.messages.success[0].usage) {
+                message = budget.messages.success[0].message;
+                color = "green";
+            } 
+        } else if (rangeDays <=10 && usagePercentage>=budget.messages.motivation[0].usage) {
+            message = budget.messages.motivation[0].message;
+            color = "red";
+        }
+        else{
+            message = "";
+        }
+
+        // עדכון תווית הגרף
+
+
+    // const now = new Date();
+    // const daysPassed = now.getDate() - budget.startEndDay;//??
+
+    // //const usagePercentage = (budget.usedBudget / budget.totalBudget) * 100;
+
+    // budget.messages.success.forEach((msg, index) => {
+    //     if (daysPassed >= msg.days && usagePercentage < msg.usage) {
+    //         alert(`משפט הצלחה: ${msg.message}`);
+    //     }
+    // });
+
+    // budget.messages.motivation.forEach((msg, index) => {
+    //     if (daysPassed >= msg.days && usagePercentage > msg.usage) {
+    //         alert(`משפט מוטיבציה: ${msg.message}`);
+    //     }
+    // });
+    }
+    updateChartLabel(message, color);
+}
+// פונקציה לעדכון תווית הגרף
+function updateChartLabel(message, color) {
+    
+//const chartMessage = document.getElementById("chartMessage");
+    const chartLabel = document.getElementById("chartMessage");
+    if (chartLabel) {
+        chartLabel.innerText = message;
+        chartLabel.style.color = color || "black"; // ברירת מחדל: שחור
+    }
+}
+
+function getDates(startDate, endDate){
+    var delta = endDate - startDate;
+    return delta / (1000 * 60 * 60 * 24); 
+}
+// // בדיקה בכל הוספת הוצאה
+// function addExpenseToBudget(amount, date) {
+//     // קוד קיים להוספת הוצאה...
+
+//     checkBudgetStatus(); // קריאה לפונקציה לבדיקת עמידה ביעדים
+// }
+
 
 function saveBudget() {
     const totalBudget = parseFloat(document.getElementById("budgetAmount").value);
@@ -141,7 +286,30 @@ function saveBudget() {
             console.log(budget.months);
         }
     }
-
+    
+    if(budget.ifMessages){
+        const good10 = document.getElementById("good10");
+        const good20 = document.getElementById("good20");
+        const good30 = document.getElementById("good30");
+        const bad10 = document.getElementById("bad10");
+        const bad20 = document.getElementById("bad20");
+        const bad30 = document.getElementById("bad30");
+        const badWarning = document.getElementById("badWarning");
+    
+        budget.messages.success[0].message = good10.value;
+        budget.messages.success[1].message = good20.value;
+        budget.messages.success[2].message = good30.value;
+    
+        budget.messages.motivation[0].message = bad10.value;
+        budget.messages.motivation[1].message = bad20.value;
+        budget.messages.motivation[2].message = bad30.value;
+        
+        budget.messages.warning[0].message = badWarning.value;
+        //checkBudgetStatus();
+    }
+    else{
+        document.getElementById("chartMessage").value = "";
+    }
 
     // שמירת התקציב ב-localStorage
     localStorage.setItem("budget", JSON.stringify(budget));
@@ -153,16 +321,12 @@ function saveBudget() {
     closeBudgetModal();
 }
 
-// function editExpenseInBudget(oldAmount, newAmount, oldDate, newDate) {
-//     deleteExpenseFromBudget(oldAmount, oldDate);
-//     addExpenseToBudget(newAmount, newDate)
-// }
-
 function deleteExpenseFromBudget(amount, date) {
     // מציאת החודש הרלוונטי מתוך המערך
     let currentMonthObject = budget.months.find(month => month.isDateInBudgetRange(date));
     if (!currentMonthObject) {
         console.log("שגיאה");
+        checkAndUpdateUsedBudget();
     }
     else{
         currentMonthObject.deleteExpense(amount,date);
@@ -211,6 +375,12 @@ let budgetChart = null; // משתנה גלובלי לשמירת הגרף
 let displayedLastMonth = new Date(); // אינדקס להתחלת החודשים המוצגים (אחורה)
 const monthsPerPage = 6; // מספר החודשים להצגה בגרף
 
+function shiftMonths(direction) {
+    // עדכון החודש האחרון המוצג לפי הכיוון (1 קדימה, -1 אחורה)
+    displayedLastMonth.setMonth(displayedLastMonth.getMonth() + direction * monthsPerPage);
+    renderBudgetChart(); // עדכון הגרף
+}
+
 function renderBudgetChart() {
     const ctx = document.getElementById("budgetChart").getContext("2d");
 
@@ -232,24 +402,8 @@ function renderBudgetChart() {
         );
         return currentMonthObject ? currentMonthObject.expenses : 0; // ניצול התקציב או 0 אם אין נתונים
     });
-    //     monthsShow[i] = {month:displayedLastMonth.getMonth-monthsPerPage,year: displayedLastMonth.getFullYear()};
-    //     (monthsShow[i].month<0)?{month:monthsShow[i].month+12, year: monthsShow[i]-1}:monthsShow[i];
-        
-    // }
-    // const labels = monthsShow.map(month => `${month.month + 1}/${month.year}`); // חודש ושנה   
-    // const data = monthsShow.map(month => {
-    //     let currentMonthObject = budget.months.find(m => m.isDateInBudgetRange( new Date(month.getFullYear, month.getDate, budget.startEndDay)));
-    //     if(currentMonthObject){
-    //         return currentMonthObject.expenses;
-    //     }
-    //     return 0;
-    // }); // החודשים עצמם
     
     const totalBudgetData = monthsShow.map(() => budget.totalBudget); // אותו תקציב עבור כל החודשים
-
-    // const labels = budget.months.map(month => `${month.month + 1}/${month.year}`); // חודש ושנה
-    // const data = budget.months.map(month => month.expenses); // ניצול התקציב בכל חודש
-    // const totalBudgetData = budget.months.map(() => budget.totalBudget); // אותו תקציב עבור כל החודשים
 
     if (budgetChart) {
         budgetChart.destroy(); 
@@ -313,12 +467,12 @@ function renderBudgetChart() {
 // קביעת זמן להתחיל את הבדיקה ב-12 בלילה
 function scheduleNextCheck() {
     const now = new Date();
-    const nextCheck = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 18, 0, 1); // 12 בלילה מחר
-    const delay = nextCheck - now; // זמן שנותר עד 12 בלילה
+    const nextCheck = new Date(now.getFullYear(), now.getMonth(), now.getDate() , 0, 0, 0); 
+    const delay = nextCheck - now; 
 
     setTimeout(() => {
-        checkAndUpdateMonth();
-        setInterval(checkAndUpdateMonth, 60*60*1000); //  עכשיו כל 24 שעות לאחר מכן  (24*60*60*1000)
+        checkAndUpdateUsedBudget();
+        setInterval(checkAndUpdateUsedBudget, 24*60*60*1000);
     }, delay);
 }
 

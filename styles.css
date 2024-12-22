@@ -1,3 +1,8 @@
+body {
+    font-family: Arial, sans-serif;
+    direction: rtl; /* תצוגת טקסט מימין לשמאל */
+}
+
 /* חלוקת האזור העליון */
 .top-section {
     display: flex;
@@ -21,7 +26,25 @@
     align-items: center;
 }
 
+/* === טבלה === */
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: right;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* ===כפתורים ==== */
 #openAdd{
     background-color: #f9f9f9;
     border: 2px solid #007bff; /* צבע המסגרת */
@@ -48,31 +71,6 @@
     color: #007bff; /* צבע הכותרת */
 }
 
-
-
-body {
-    font-family: Arial, sans-serif;
-    direction: rtl; /* תצוגת טקסט מימין לשמאל */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: right;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-
-
 /* כפתורי מחיקה ועריכה */
 
 .edit-btn, .delete-btn {
@@ -93,8 +91,6 @@ th {
 .edit-btn:hover i, .delete-btn:hover i {
     opacity: 0.7;
 }
-
-
 
 /* sort: */
 .sort-icon::before {
@@ -133,7 +129,6 @@ th {
     margin: 10% auto;
     padding: 20px;
     border: 3px solid #007bff;
-    /* border: 1px solid #0000FF; */
     width: 50%;
     border-radius: 8px;
 }
@@ -153,7 +148,7 @@ th {
     cursor: pointer;
 }
 
-
+/* תקציב */
 .right-section {
     text-align: center; /* מרכז טקסט */
     padding: 15px; /* ריווח פנימי */
@@ -162,6 +157,10 @@ th {
     background-color: #f9f9f9; /* רקע בהיר */
     margin: 15px 0; /* ריווח חיצוני */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* הצללה */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* מרכז את האלמנטים אופקית */
 }
 
 #budgetDisplay h3 {
@@ -174,15 +173,10 @@ th {
     color: #666; /* צבע טקסט משני */
 }
 
-/* . */
-.right-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* מרכז את האלמנטים אופקית */
-}
-
 #budgetDisplay {
     width: 100%; /* מבטיח שהתקציב יתפוס את כל השורה */
+
+    animation: fadeIn 1s ease-in-out;
 }
 
 #openBudgetModal {
@@ -194,10 +188,6 @@ th {
     color: green; /* שינוי דינמי לפי אחוז ניצול התקציב */
 }
 
-#budgetDisplay {
-    animation: fadeIn 1s ease-in-out;
-}
-
 /* גרף */
 #chartContainer {
     margin-top: 20px;
@@ -205,4 +195,72 @@ th {
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 10px;
+    width: 80%;
+    margin: auto;
+}
+
+/* #prevMonths, #nextMonths {
+    margin: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#prevMonths:hover, #nextMonths:hover {
+    background-color: #0056b3;
+} */
+/* עיצוב כללי לכפתורים */
+.nav-button {
+    position: absolute;
+    top: 50%; /* מיקום באמצע הגובה */
+    transform: translateY(-50%); /* מרכז את הכפתור אנכית */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 10; /* מבטיח שהכפתורים יופיעו מעל הגרף */
+}
+
+/* כפתור שמאלי */
+.left-button {
+    left: -40px; /* מיקום שמאלה */
+}
+
+/* כפתור ימני */
+.right-button {
+    right: -40px; /* מיקום ימינה */
+}
+
+/* אפקט hover */
+.nav-button:hover {
+    background-color: #0056b3;
+}
+/* עיצוב משפטים */
+
+.input-group {
+    display: flex;
+    align-items: center; /* ליישור אנכי */
+    margin-bottom: 10px; /* רווח בין השורות */
+}
+
+.input-group label {
+    flex: 0 0 auto; /* תופס רק את רוחב התוכן */
+    margin-right: 10px; /* רווח בין ה-label ל-input */
+}
+
+.input-group input {
+    flex: 1; /* תופס את שאר הרוחב */
+    padding: 8px; /* ריווח פנימי */
+    border: 1px solid #ddd; /* מסגרת */
+    border-radius: 5px; /* פינות מעוגלות */
+    box-sizing: border-box; /* כולל Padding ו-Border בחישוב הרוחב */
 }

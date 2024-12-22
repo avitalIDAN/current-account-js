@@ -113,7 +113,7 @@ function addExpense() {
 
     // הוספה לתקציב
     if(type=="expense"){
-        addExpenseToBudget(amount, dateInput);
+        addExpenseToBudget(amount, selectedDate);
     }
     
     // איפוס שדות הקלט לאחר הוספה

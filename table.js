@@ -41,6 +41,8 @@ function sortExpenses(criteria) {
             comparison = typeOrder[a.type] - typeOrder[b.type];  
              // מיון תאריכים
              //comparison = -a["type"].localeCompare(b["type"]);
+        } else if (criteria === 'check') {
+            comparison = (a.isChecked === b.isChecked) ? 0 : a.isChecked ? -1 : 1; // מיון של 'V' לפני 'ללא V'
         } else {
             comparison = a[criteria].localeCompare(b[criteria]);
         }
