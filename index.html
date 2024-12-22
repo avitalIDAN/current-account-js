@@ -48,11 +48,6 @@
             <button id="openBudgetModal" onclick="openBudgetModal()">הגדרת תקציב</button>            
             
             <br><br>
-            <!-- <div id="chartContainer" >
-                <canvas id="budgetChart"></canvas>
-            </div>
-            <button id="prevMonths" onclick="shiftMonths(-1)">חודשים קודמים</button>
-            <button id="nextMonths" onclick="shiftMonths(1)">חודשים הבאים</button> -->
             
             <div id="chartMessage" style="text-align: center; font-size: 16px; font-weight: bold;"></div>
 
@@ -215,7 +210,6 @@
 
 
                 <!-- כפתור הצגת הגדרות משפטים -->
-                <!-- <button id="toggleMessageConfig" onclick="toggleMessageConfig()">הגדרת משפטי מוטיבציה והצלחה</button> -->
                 <label>
                     <input type="checkbox" id="toggleMessageCheckbox" onchange="toggleMessageConfig()" />
                     עם משפטי עידוד
@@ -257,8 +251,6 @@
                         </div>
                     </div>
                     
-                    <!-- <h4>חריגה מהתקציב: </h4>
-                    <input type="text" value="חריגה מהתקציב!"> -->
                 </div>
 
                 <br>
@@ -268,8 +260,7 @@
     </div>
     
      
-    <!-- טעינת קבצי JavaScript -->
-     
+    <!-- טעינת קבצי JavaScript -->     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="budgetManagement.js"></script>

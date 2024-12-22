@@ -4,8 +4,6 @@ const sortState = {
     order: null   // null (ללא מיון), "asc" (עולה), "desc" (יורד)
 };
 
-
-
 function sortExpenses(criteria) {
     // עדכון מצב המיון
     if (sortState.column === criteria) {
@@ -31,16 +29,12 @@ function sortExpenses(criteria) {
             const dateA = new Date(a.fullDate.split(" / ")[0].split('.').reverse().join('-'));
             const dateB = new Date(b.fullDate.split(" / ")[0].split('.').reverse().join('-'));
             comparison = dateA - dateB;
-        }else if (criteria === 'expense'){ // || criteria === 'repayment') {
+        }else if (criteria === 'expense'){ 
             const typeOrder = { income: 3, repayment: 4, expense: 1, loan: 2 };
             comparison = typeOrder[a.type] - typeOrder[b.type];  
-             // מיון תאריכים
-             //comparison =  a["type"].localeCompare(b["type"]);
-        } else if (criteria === 'income'){ //  || criteria === 'loan') {
+        } else if (criteria === 'income'){ 
             const typeOrder = { income: 1, repayment: 2, expense: 3, loan: 4 };
             comparison = typeOrder[a.type] - typeOrder[b.type];  
-             // מיון תאריכים
-             //comparison = -a["type"].localeCompare(b["type"]);
         } else if (criteria === 'check') {
             comparison = (a.isChecked === b.isChecked) ? 0 : a.isChecked ? -1 : 1; // מיון של 'V' לפני 'ללא V'
         } else {
@@ -100,7 +94,7 @@ function filterExpenses(type = null) {
         : true;
 
 
-        return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter && ByDateRange;//filterByDateRange(expense);
+        return dateFilter && amountFilter && descriptionFilter && paymentMethodFilter && typeFilter && ByDateRange;
     });
 
     renderTable(filtered);

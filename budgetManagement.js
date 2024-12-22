@@ -137,10 +137,6 @@ function UpdateListDates(){
 }
 
 // פונקציה להצגת הגדרות משפטים
-// function toggleMessageConfig() {
-//     const messageConfig = document.getElementById("messageConfig");
-//     messageConfig.style.display = messageConfig.style.display === "none" ? "block" : "none";
-// }
 function toggleMessageConfig() {
     const messageConfigContainer = document.getElementById("messageConfigContainer");
     const checkbox = document.getElementById("toggleMessageCheckbox");
@@ -169,10 +165,11 @@ function checkBudgetStatus() {
     let color = "black";
 
     if(usagePercentage>100){
-        //updateChartLabel(message, color)
         message = budget.messages.warning[0].message;
         color = "red";
         alert(message);
+        updateChartLabel(message, color);
+        return;
     }
     
     const currentDate = new Date();
@@ -215,33 +212,11 @@ function checkBudgetStatus() {
         else{
             message = "";
         }
-
-        // עדכון תווית הגרף
-
-
-    // const now = new Date();
-    // const daysPassed = now.getDate() - budget.startEndDay;//??
-
-    // //const usagePercentage = (budget.usedBudget / budget.totalBudget) * 100;
-
-    // budget.messages.success.forEach((msg, index) => {
-    //     if (daysPassed >= msg.days && usagePercentage < msg.usage) {
-    //         alert(`משפט הצלחה: ${msg.message}`);
-    //     }
-    // });
-
-    // budget.messages.motivation.forEach((msg, index) => {
-    //     if (daysPassed >= msg.days && usagePercentage > msg.usage) {
-    //         alert(`משפט מוטיבציה: ${msg.message}`);
-    //     }
-    // });
     }
-    updateChartLabel(message, color);
+    updateChartLabel(message, color); // עדכון תווית הגרף
 }
 // פונקציה לעדכון תווית הגרף
 function updateChartLabel(message, color) {
-    
-//const chartMessage = document.getElementById("chartMessage");
     const chartLabel = document.getElementById("chartMessage");
     if (chartLabel) {
         chartLabel.innerText = message;
@@ -253,13 +228,6 @@ function getDates(startDate, endDate){
     var delta = endDate - startDate;
     return delta / (1000 * 60 * 60 * 24); 
 }
-// // בדיקה בכל הוספת הוצאה
-// function addExpenseToBudget(amount, date) {
-//     // קוד קיים להוספת הוצאה...
-
-//     checkBudgetStatus(); // קריאה לפונקציה לבדיקת עמידה ביעדים
-// }
-
 
 function saveBudget() {
     const totalBudget = parseFloat(document.getElementById("budgetAmount").value);
@@ -305,7 +273,6 @@ function saveBudget() {
         budget.messages.motivation[2].message = bad30.value;
         
         budget.messages.warning[0].message = badWarning.value;
-        //checkBudgetStatus();
     }
     else{
         document.getElementById("chartMessage").value = "";
@@ -350,8 +317,6 @@ function addExpenseToBudget(amount, date) {
     currentMonthObject.addExpense(amount, date); // הוספת ההוצאה למופע החדש
 
     checkAndUpdateUsedBudget();
-
-    //updateBudgetDisplay();  // עדכון תצוגת התקציב
 }
 
 function checkAndUpdateUsedBudget() {

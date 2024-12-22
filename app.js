@@ -32,7 +32,7 @@ function closeAddModal() {
 function addExpenseToTable(expense) {
     // הוספת ההוצאה/ההכנסה לטבלה
     const tableBody = document.getElementById('expenseTable').querySelector('tbody');
-    const row = tableBody.insertRow(0);//tableBody.insertRow();
+    const row = tableBody.insertRow(0);
 
     // צבע לפי סוג
     updateRowBackground(row, expense.type)
