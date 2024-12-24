@@ -130,10 +130,11 @@ function UpdateListDates(){
     expenses.forEach(expense => {
         if(expense.type === 'expense'){
             const date = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'))
-            addExpenseToBudget(expense.amount, date);
+            addSimpleExpenseToBudget(expense.amount, date);
         }
 
     });
+    checkAndUpdateUsedBudget();
 }
 
 // פונקציה להצגת הגדרות משפטים
@@ -301,7 +302,7 @@ function deleteExpenseFromBudget(amount, date) {
     }
 }
 
-function addExpenseToBudget(amount, date) {
+function addSimpleExpenseToBudget(amount, date) {
     // מציאת החודש הרלוונטי מתוך המערך
     let currentMonthObject = budget.months.find(month => month.isDateInBudgetRange(date));
 
@@ -315,7 +316,11 @@ function addExpenseToBudget(amount, date) {
         budget.months.push(currentMonthObject);
     } 
     currentMonthObject.addExpense(amount, date); // הוספת ההוצאה למופע החדש
+}
 
+function addExpenseToBudget(amount, date) {
+    
+    addSimpleExpenseToBudget(amount, date);
     checkAndUpdateUsedBudget();
 }
 
@@ -448,7 +453,7 @@ class MonthlyBudget {
     constructor(year, month, startDate, dayForcheck=1) {
         this.year = year; // שנה
         this.month = dayForcheck >= startDate ? month : month - 1;
-        this.startDate = new Date(year, this.month, startDate); // יום תחילת התקציב (המשתמש בחר את היום)
+        this.startDate = new Date(year, this.month, startDate,0,0,0); // יום תחילת התקציב (המשתמש בחר את היום)
         this.endDate = this.calculateEndDate(startDate); // יום סיום התקציב (מספר הימים בחודש הבא)
         this.expenses = 0; // הוצאות החודש
         this.numberOfDays = this.calculateDaysInMonth(); // מספר הימים בחודש
@@ -462,7 +467,7 @@ class MonthlyBudget {
     // חישוב תאריך סיום החודש
     calculateEndDate(startDate) {
         // התאריך האחרון בחודש יהיה יום לפני תחילת החודש הבא
-        return new Date(this.year, this.month + 1, startDate-1); // תאריך סיום החודש 
+        return new Date(this.year, this.month + 1, startDate-1, 23,59,59); // תאריך סיום החודש 
     }
 
     // הוספת הוצאות
@@ -496,6 +501,6 @@ class MonthlyBudget {
 
     // פונקציה לבדוק אם תאריך מסויים נמצא בטווח החודש
     isDateInBudgetRange(date) {
-        return date >= this.startDate && date < this.endDate;
+        return date >= this.startDate && date <= this.endDate;
     }
 }
