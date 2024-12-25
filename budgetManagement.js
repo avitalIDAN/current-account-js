@@ -56,7 +56,7 @@ function loadBudgetFromStorage() {
 
     }
     console.log(budget.months);
-
+    checkAndUpdateUsedBudget();
 }
 
 function openBudgetModal() {
@@ -322,6 +322,7 @@ function addExpenseToBudget(amount, date) {
     
     addSimpleExpenseToBudget(amount, date);
     checkAndUpdateUsedBudget();
+    localStorage.setItem("budget", JSON.stringify(budget));
 }
 
 function checkAndUpdateUsedBudget() {
