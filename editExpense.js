@@ -11,7 +11,7 @@ function openEditModal(expense, row) {
     currentExpense = expense;
 
     // מילוי השדות בנתונים הקיימים
-    document.getElementById('editDate').value = expense.fullDate.split(" / ")[0].split('.').reverse().join('-');
+    document.getElementById('editDate').value = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-')).toISOString().slice(0, 10);
     document.getElementById('editAmount').value = expense.amount;
     document.getElementById('editDescription').value = expense.description;
     document.getElementById('editPaymentMethod').value = expense.paymentMethod;
