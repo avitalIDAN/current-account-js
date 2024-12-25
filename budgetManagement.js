@@ -300,6 +300,7 @@ function deleteExpenseFromBudget(amount, date) {
         currentMonthObject.deleteExpense(amount,date);
         checkAndUpdateUsedBudget();
     }
+    localStorage.setItem("budget", JSON.stringify(budget));
 }
 
 function addSimpleExpenseToBudget(amount, date) {
