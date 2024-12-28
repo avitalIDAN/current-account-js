@@ -1,6 +1,6 @@
 const budget = {
     totalBudget: 0, // סכום התקציב
-    startEndDay: null, // יום התחלה וסיום בחודש
+    startEndDay: 1, // יום התחלה וסיום בחודש
     usedBudget: 0, // סכום שנוצל (מתעדכן אוטומטית)
     months: [],       // אובייקטים עבור כל חודש (כולל הוצאות, תאריכים וכו')
     ifMessages: false,
@@ -44,7 +44,7 @@ function loadBudgetFromStorage() {
         budget.months = parsedBudget.months.map(month => {
             const newMonth = new MonthlyBudget(
                 month.year,
-                month.month+1,
+                month.month, //+1
                 budget.startEndDay
             );
         
@@ -323,6 +323,7 @@ function addExpenseToBudget(amount, date) {
     
     addSimpleExpenseToBudget(amount, date);
     checkAndUpdateUsedBudget();
+    //updateBudgetDisplay
     localStorage.setItem("budget", JSON.stringify(budget));
 }
 
