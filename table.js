@@ -78,7 +78,7 @@ function filterExpenses(type = null) {
         const expenseDate = new Date(expense.fullDate.split(" / ")[0].split('.').reverse().join('-'));
         const ByDateRange = (!startDate || expenseDate >= new Date(startDate)) &&
                            (!endDate || expenseDate <= new Date(endDate));
-
+        // סינון טקסטואלי
         const dateFilter = filters[0].value ? expense.fullDate && expense.fullDate.includes(filters[0].value) : true;
         const amountFilter = filters[1].value ? expense.amount && expense.amount === parseFloat(filters[1].value) : true;
         const descriptionFilter = filters[2].value ? expense.description && expense.description.includes(filters[2].value) : true;

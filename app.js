@@ -21,7 +21,7 @@ function loadExpensesFromLocalStorage() {
 
 
 function openAddModal() {
-    document.getElementById('expenseDate').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('expenseDate').value = new Date().toISOString().slice(0, 10);//default values ברירת מחדל
 
     // הצגת ה-modal
     document.getElementById("addModal").style.display = "block";

@@ -29,8 +29,6 @@
 
             <br>
 
-            <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
-            <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
 
         </div>
     
@@ -64,6 +62,13 @@
 
     <!-- טבלת הכנסות והוצאות -->
     <h2>רשימת הכנסות והוצאות:</h2>
+    <label><b> סינונים לא טקסטואלים - </b></label> 
+    <label>מתאריך: <input type="date" id="startDate" onchange="filterExpenses()"></label>
+    <label>עד תאריך: <input type="date" id="endDate" onchange="filterExpenses()"></label>
+    <button onclick="filterExpenses('income')">רק הכנסות</button>
+    <button onclick="filterExpenses('expense')">רק הוצאות</button>
+    <button onclick="filterExpenses('loan_repayment')">הלוואות והחזרים</button>
+    <button onclick="filterExpenses('all')">כל ההכנסות וההוצאות</button>
     <table id="expenseTable">
         <thead>
             <tr>
@@ -82,12 +87,13 @@
                 <th><input type="number" placeholder="סנן לפי סכום" oninput="filterExpenses()"></th>
                 <th><input type="text" placeholder="סנן לפי תיאור" oninput="filterExpenses()"></th>
                 <th><input type="text" placeholder="סנן לפי תשלום" oninput="filterExpenses()"></th>
-                <th colspan="5">
-                    <button onclick="filterExpenses('income')">רק הכנסות</button>
-                    <button onclick="filterExpenses('expense')">רק הוצאות</button>
-                    <button onclick="filterExpenses('loan_repayment')">הלוואות והחזרים</button>
-                    <button onclick="filterExpenses('all')">הכל</button>
-                </th>
+                <!-- <th colspan="5">
+                </th> -->
+                <th> </th> 
+                <th> </th> 
+                <th> </th> 
+                <th> </th> 
+                <th> </th> 
             </tr>
         </thead>
         <tbody>

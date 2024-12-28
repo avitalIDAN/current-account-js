@@ -44,7 +44,7 @@ function loadBudgetFromStorage() {
         budget.months = parsedBudget.months.map(month => {
             const newMonth = new MonthlyBudget(
                 month.year,
-                month.month, //+1
+                month.month + 1,
                 budget.startEndDay
             );
         

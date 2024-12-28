@@ -196,6 +196,9 @@ th {
     margin: auto;
 }
 
+button{
+    border-color: #007bff;
+}
 /* עיצוב כללי לכפתורים */
 .nav-button {
     position: absolute;
