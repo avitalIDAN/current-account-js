@@ -20,8 +20,9 @@ function loadExpensesFromLocalStorage() {
 }
 
 
-function openAddModal() {
-    document.getElementById('expenseDate').value = new Date().toISOString().slice(0, 10);//default values ברירת מחדל
+function openAddModal() { 
+    console.log(new Date());
+    document.getElementById('expenseDate').value = new Date().toLocaleDateString('en-CA');//.toISOString().slice(0, 10);//default values ברירת מחדל
 
     // הצגת ה-modal
     document.getElementById("addModal").style.display = "block";
